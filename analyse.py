@@ -1,11 +1,5 @@
 import json
 
-from betfairlightweight.resources.bettingresources import PriceSize
-
-# monkey patch PriceSize object to print out its value to console
-PriceSize.__repr__ = lambda self: f"PriceSize(price={self.price}, size={self.size})"
-
-
 def pprint(obj):
     """
     Pretty prints the betfairlightweight's _data attribute as JSON
@@ -58,25 +52,3 @@ def analyse_objects(obj1, obj2 = None):
         display_common_attrs(obj1, obj2)
         print("\n")
         display_attr_diffs(obj1, obj2)
-
-
-import time
-class CodeTimer:
-    
-    units = ("ns", "us", "ms", "s")
-    
-    def __enter__(self):
-        self.start = time.perf_counter_ns()
-    
-    def __exit__(self, exc_type, exc_value, exc_tb):
-        finish = time.perf_counter_ns()
-        print(f"Code execution took {self.format_time(finish - self.start)}.")
-
-    @classmethod
-    def format_time(cls, time_ns: int) -> str:
-        """Automatically selecs the suitable time unit and returns a formatted string."""
-        divisions = 0
-        time_div = time_ns
-        while(time_div := time_div // 1000):
-            divisions += 1
-        return f"{time_ns // (1000 ** divisions)} {cls.units[divisions]}"

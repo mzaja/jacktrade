@@ -1,2 +1,2 @@
-# py-common-utils
-A collection of often-used utilities shared across different Python projects
+# jacktrade
+Jack of all trades, master of none - a collection of commonly used Python utilities. 

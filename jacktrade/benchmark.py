@@ -4,6 +4,11 @@ class CodeTimer:
     """
     Times a section of code inside a "with" statement.
     
+    Example usage:
+        with CodeTimer() as t:
+            # Code to time
+        print(f"Execution took {t.s} seconds / {t.ms} milliseconds / {t.us} microseconds / {t.ns} nanoseconds.")
+    
     Parameters:
         - no_print: If True, no message will be printed on exiting the timing block.
         - min_digits: Minimal number of digits to display when printing the result.

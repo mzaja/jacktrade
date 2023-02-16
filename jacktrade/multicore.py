@@ -3,7 +3,9 @@ import multiprocessing as mp
 from itertools import zip_longest
 from typing import Any, Callable, Iterable
 
-
+# ---------------------------------------------------------------------------
+# FUNCTIONS
+# ---------------------------------------------------------------------------
 def do_multicore_work(worker: Callable, 
                       args: Iterable[tuple] = None, 
                       kwargs: Iterable[dict] = None, 

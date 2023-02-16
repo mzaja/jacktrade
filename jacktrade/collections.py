@@ -1,5 +1,4 @@
-from typing import Iterator, Any, Tuple
-
+from typing import Iterator, Any
 
 # ---------------------------------------------------------------------------
 # DICTIONARIES

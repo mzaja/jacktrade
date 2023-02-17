@@ -1,16 +1,6 @@
-import json
-
-def pprint(obj):
-    """
-    Pretty prints the betfairlightweight's _data attribute as JSON
-    or the object itself if _data attribute does not exist.
-    """
-    try:
-        print(json.dumps(obj._data, indent=4))
-    except AttributeError:
-        print(json.dumps(vars(obj), indent=4))
-
-
+# ---------------------------------------------------------------------------
+# FUNCTIONS
+# ---------------------------------------------------------------------------
 def display_attrs(obj, attrs=None):
     if attrs is None:   # if used as a standalone function
         attrs = [a for a in dir(obj) if not a.startswith('__')]

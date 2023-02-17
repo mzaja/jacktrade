@@ -1,4 +1,5 @@
-from typing import Iterator, Any
+from typing import Iterator, Iterable, Any
+from itertools import islice, chain
 
 # ---------------------------------------------------------------------------
 # DICTIONARIES
@@ -27,7 +28,7 @@ def get_first_dict_value(dictionary: dict) -> Any:
     return next(iter(dictionary.values()), None)
 
 # ---------------------------------------------------------------------------
-# LISTS
+# ITERABLES
 # ---------------------------------------------------------------------------
 def flatten_list(input_data: list, output_data: list, max_depth: int = 10) -> None:
     """
@@ -40,7 +41,23 @@ def flatten_list(input_data: list, output_data: list, max_depth: int = 10) -> No
     else:
         output_data.append(input_data)
 
-def chunkify(items: list, chunk_size: int) -> Iterator[list]:
-    """Yields successive n-sized chunks from a list of items."""
-    for i in range(0, len(items), chunk_size):
-        yield items[i : i + chunk_size]
+def chunkify(iterable: Iterable, chunk_size: int) -> Iterator[list]:
+    """
+    Yields successive n-sized list chunks from an iterable.
+    Supports generator expressions.
+    """
+    iterator = iter(iterable)
+    while chunk := list(islice(iterator, chunk_size)):
+        yield chunk
+
+def ichunkify(iterable: Iterable, chunk_size: int) -> Iterator[Iterator]:
+    """
+    Yields successive n-sized iterator chunks from an iterable.
+    Supports generator expressions.
+    
+    WARNING!:   Chunks must be consumed as they are yielded, otherwise
+                the results will not be as expected!
+    """
+    iterator = iter(iterable)
+    for first_chunk_elem in iterator:
+        yield chain([first_chunk_elem], islice(iterator, chunk_size - 1))

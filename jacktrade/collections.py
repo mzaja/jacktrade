@@ -61,3 +61,13 @@ def ichunkify(iterable: Iterable, chunk_size: int) -> Iterator[Iterator]:
     iterator = iter(iterable)
     for first_chunk_elem in iterator:
         yield chain([first_chunk_elem], islice(iterator, chunk_size - 1))
+
+def limited_iterator(iterable: Iterable, limit: int = None) -> Iterator:
+    """
+    Returns an interator which yields successive elements of
+    the iterable up to the limit, if the limit is specified.
+    """
+    for count, item in enumerate(iterable, 1):
+        if limit and (count > limit):
+            return
+        yield item

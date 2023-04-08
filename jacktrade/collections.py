@@ -5,7 +5,7 @@ from itertools import islice, chain
 # ---------------------------------------------------------------------------
 # DICTIONARIES
 # ---------------------------------------------------------------------------
-def flatten_dict(input_data: dict, output_data: list, max_depth: int = 10) -> None:
+def flatten_dict(input_data: dict, output_data: list, max_depth: int = 999) -> None:
     """
     Flattens a nested dict and returns the values inside output_data list.
     Recursion happens until a non-dict item is encountered, or max_depth is reached.
@@ -35,7 +35,7 @@ def get_first_dict_value(dictionary: dict) -> Any:
 # ---------------------------------------------------------------------------
 # ITERABLES
 # ---------------------------------------------------------------------------
-def flatten_list(input_data: list, output_data: list, max_depth: int = 10) -> None:
+def flatten_list(input_data: list, output_data: list, max_depth: int = 999) -> None:
     """
     Flattens a multilevel list and returns the values inside output_data list.
     Recursion happens until a non-list item is encountered, or max_depth is reached.

@@ -1,2 +1,5 @@
+@ECHO OFF
 black --check tests jacktrade
-python -m unittest discover tests
+coverage run --source=jacktrade -m unittest discover -s tests -b
+coverage html
+coverage report

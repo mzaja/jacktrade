@@ -1,11 +1,15 @@
-# Jacktrade
-**Jack of all trades, master of none** - a collection of commonly used Python utilities. The package consists of the following submodules:
+# jacktrade
+**Jack of all trades, master of none** - a collection of commonly used Python utilities. Install using:
+```
+pip install jacktrade
+```
 
-- [Jacktrade](#jacktrade)
-  - [Benchmark](#benchmark)
-  - [Collections](#collections)
-  - [Multicore](#multicore)
-  - [Pickler](#pickler)
+The package consists of the following submodules:
+
+- [Benchmark](#benchmark)
+- [Collections](#collections)
+- [Multicore](#multicore)
+- [Pickler](#pickler)
 
 ## Benchmark
 Contains a `CodeTimer` class which is used to elegantly and precisely time a piece of code:

@@ -1,4 +1,6 @@
 # jacktrade
+[![PyPI version](https://badge.fury.io/py/jacktrade.svg)](https://badge.fury.io/py/jacktrade) ![License](https://img.shields.io/github/license/mzaja/jacktrade)
+
 **Jack of all trades, master of none** - a collection of commonly used Python utilities. Install using:
 ```
 pip install jacktrade

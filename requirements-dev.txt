@@ -1,3 +1,4 @@
 # Requirements for development
 black
 coverage
+coveralls

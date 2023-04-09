@@ -5,16 +5,26 @@ from itertools import islice, chain
 # ---------------------------------------------------------------------------
 # DICTIONARIES
 # ---------------------------------------------------------------------------
-def flatten_dict(input_data: dict, output_data: list, max_depth: int = 999) -> None:
+def _flatten_dict(input_data: dict, output_data: list, max_depth: int) -> None:
     """
     Flattens a nested dict and returns the values inside output_data list.
     Recursion happens until a non-dict item is encountered, or max_depth is reached.
     """
     if isinstance(input_data, dict) and (max_depth > 0):
         for data in input_data.values():
-            flatten_dict(data, output_data, max_depth - 1)
+            _flatten_dict(data, output_data, max_depth - 1)
     else:
         output_data.append(input_data)
+
+
+def flatten_dict(input_data: dict, max_depth: int = 999) -> list:
+    """
+    Flattens a nested dict and returns the values inside a list.
+    Recursion happens until a non-dict item is encountered, or max_depth is reached.
+    """
+    output_data = []
+    _flatten_dict(input_data, output_data, max_depth)
+    return output_data
 
 
 def get_first_dict_item(dictionary: dict) -> tuple[Any, Any]:
@@ -35,16 +45,26 @@ def get_first_dict_value(dictionary: dict) -> Any:
 # ---------------------------------------------------------------------------
 # ITERABLES
 # ---------------------------------------------------------------------------
-def flatten_list(input_data: list, output_data: list, max_depth: int = 999) -> None:
+def _flatten_list(input_data: list, output_data: list, max_depth: int) -> None:
     """
     Flattens a multilevel list and returns the values inside output_data list.
     Recursion happens until a non-list item is encountered, or max_depth is reached.
     """
     if isinstance(input_data, list) and (max_depth > 0):
         for data in input_data:
-            flatten_list(data, output_data, max_depth - 1)
+            _flatten_list(data, output_data, max_depth - 1)
     else:
         output_data.append(input_data)
+
+
+def flatten_list(input_data: list, max_depth: int = 999) -> list:
+    """
+    Flattens a multilevel list and returns the values inside a list.
+    Recursion happens until a non-list item is encountered, or max_depth is reached.
+    """
+    output_data = []
+    _flatten_list(input_data, output_data, max_depth)
+    return output_data
 
 
 def chunkify(iterable: Iterable, chunk_size: int) -> Iterator[list]:
@@ -70,7 +90,7 @@ def ichunkify(iterable: Iterable, chunk_size: int) -> Iterator[Iterator]:
         yield chain([first_chunk_elem], islice(iterator, chunk_size - 1))
 
 
-def limited_iterator(iterable: Iterable, limit: int = None) -> Iterator:
+def limit_iterator(iterable: Iterable, limit: int = None) -> Iterator:
     """
     Returns an interator which yields successive elements of
     the iterable up to the limit, if the limit is specified.

@@ -9,7 +9,7 @@ from jacktrade.collections import (
     flatten_list,
     chunkify,
     ichunkify,
-    limited_iterator,
+    limit_iterator,
 )
 
 # ---------------------------------------------------------------------------
@@ -38,16 +38,14 @@ class CollectionsTest(unittest.TestCase):
     def test_flatten_dict_core(self):
         """Tests flattenning a multilevel dict."""
         input_data = MULTILEVEL_DICT
-        output_data = []
-        flatten_dict(input_data, output_data)
-        self.assertEqual(output_data, [1, 2, 3, 4, 5])
+        self.assertEqual(flatten_dict(input_data), [1, 2, 3, 4, 5])
 
     def test_flatten_dict_max_depth(self):
         """Tests flattening a multilevel dict when max_depth is reached."""
         input_data = MULTILEVEL_DICT
-        output_data = []
-        flatten_dict(input_data, output_data, max_depth=2)
-        self.assertEqual(output_data, [{"a3": 1, "b3": 2}, 3, 4, 5])
+        self.assertEqual(
+            flatten_dict(input_data, max_depth=2), [{"a3": 1, "b3": 2}, 3, 4, 5]
+        )
 
     def test_get_first_dict_x(self):
         """Tests the get_first_dict_* functions."""
@@ -59,16 +57,12 @@ class CollectionsTest(unittest.TestCase):
     def test_flatten_list_core(self):
         """Tests flattening a multilevel list."""
         input_data = MULTILEVEL_LIST
-        output_data = []
-        flatten_list(input_data, output_data)
-        self.assertEqual(output_data, [1, 2, 3, 4, 5])
+        self.assertEqual(flatten_list(input_data), [1, 2, 3, 4, 5])
 
     def test_flatten_list_max_depth(self):
         """Tests flattening a multilevel list."""
         input_data = MULTILEVEL_LIST
-        output_data = []
-        flatten_list(input_data, output_data, max_depth=2)
-        self.assertEqual(output_data, [[1, 2], 3, 4, 5])
+        self.assertEqual(flatten_list(input_data, max_depth=2), [[1, 2], 3, 4, 5])
 
     def test_chunkify(self):
         """Tests chunkify function."""
@@ -98,10 +92,10 @@ class CollectionsTest(unittest.TestCase):
 
     def test_limited_iterator(self):
         """Tests limiting the iterator to max elements."""
-        self.assertEqual(list(limited_iterator(LONG_LIST, 5)), [1, 2, 3, 4, 5])
-        self.assertEqual(list(limited_iterator(iter(LONG_LIST), 5)), [1, 2, 3, 4, 5])
-        self.assertEqual(list(limited_iterator(LONG_LIST, 99)), LONG_LIST)
-        self.assertEqual(list(limited_iterator(iter(LONG_LIST), 99)), LONG_LIST)
+        self.assertEqual(list(limit_iterator(LONG_LIST, 5)), [1, 2, 3, 4, 5])
+        self.assertEqual(list(limit_iterator(iter(LONG_LIST), 5)), [1, 2, 3, 4, 5])
+        self.assertEqual(list(limit_iterator(LONG_LIST, 99)), LONG_LIST)
+        self.assertEqual(list(limit_iterator(iter(LONG_LIST), 99)), LONG_LIST)
 
 
 if __name__ == "__main__":

@@ -31,7 +31,7 @@ class MulticoreTest(unittest.TestCase):
     def setUp(self) -> None:
         self.results = []
 
-    def worker_done_callback(self, future: tuple):
+    def worker_done_callback(self, future):
         """Called when a worker finishes execution."""
         self.results.append(future.result())
 

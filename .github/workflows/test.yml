@@ -1,0 +1,48 @@
+name: test
+
+on:
+  push:
+    branches:
+    - main
+    paths-ignore:
+    - '**.md'
+  pull_request:
+    branches:
+    - main
+    paths-ignore:
+    - '**.md'
+  # schedule:
+  #   # * is a special character in YAML so you have to quote this string
+  #   # Run CI once a month
+  #   - cron:  '37 13 1 * *'
+
+jobs:
+  test:
+    runs-on: ${{matrix.os}}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        python-version: ["3.10", "3.11"]
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: Set up Python 3.x
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install requirements
+      run: |
+        pip install --upgrade pip
+        pip install -r requirements-dev.txt
+    - name: Check formatting
+      run: |
+        black --check tests jacktrade
+    - name: Run tests
+      run: |
+        coverage run --source=jacktrade -m unittest discover -s tests -b
+        coverage report
+    # - name: Coveralls
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #   run: coveralls --service=github

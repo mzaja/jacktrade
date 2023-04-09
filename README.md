@@ -1,7 +1,7 @@
-# jacktrade
+# Jacktrade
 **Jack of all trades, master of none** - a collection of commonly used Python utilities. The package consists of the following submodules:
 
-- [jacktrade](#jacktrade)
+- [Jacktrade](#jacktrade)
   - [Benchmark](#benchmark)
   - [Collections](#collections)
   - [Multicore](#multicore)
@@ -57,8 +57,9 @@ def worker_done_callback(future):
     print(future.result())
 
 if __name__ == "__main__":
-    do_multicore_work(worker, args=[(1, 2), (3, 4), (5, 6)], worker_done_callback=worker_done_callback)
-    # Prints: (1, 2)\n(3, 4)\n(5, 6)\n
+    do_multicore_work(
+        worker, args=[(1, 2), (3, 4), (5, 6)], worker_done_callback=worker_done_callback
+    )    # Prints: (1, 2)\n(3, 4)\n(5, 6)\n
 ```
 
 ## Pickler
@@ -67,5 +68,5 @@ This tiny module contains two convenience functions for pickling and unpickling 
 from jacktrade.pickler import pickle_object, unpickle_object
 
 pickle_object(obj := [1, 2, 3], filename := "obj.pickle")   # Pickles obj to obj.pickle file
-assert unpickle_object(filename) == obj     # Unpickle obj.pickle and test that it is the same as obj
+assert unpickle_object(filename) == obj     # Unpickle obj.pickle and test equality with obj
 ```

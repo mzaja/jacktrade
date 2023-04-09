@@ -11,10 +11,10 @@ on:
     - main
     paths-ignore:
     - '**.md'
-  # schedule:
-  #   # * is a special character in YAML so you have to quote this string
-  #   # Run CI once a month
-  #   - cron:  '37 13 1 * *'
+  schedule:
+    # Run CI once a month to ensure compatibility with newest packages
+    # * is a special character in YAML so you have to quote this string
+    # - cron:  '37 13 1 * *'
 
 jobs:
   test:
@@ -26,9 +26,9 @@ jobs:
         python-version: ["3.10", "3.11"]
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: Set up Python 3.x
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v3
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install requirements

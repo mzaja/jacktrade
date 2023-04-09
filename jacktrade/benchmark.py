@@ -39,8 +39,7 @@ class CodeTimer:
         return self
 
     def __exit__(self, exc_type, exc_value, exc_tb):
-        finish = time.perf_counter_ns()
-        self.ns = finish - self.start
+        self.ns = time.perf_counter_ns() - self.start
         self.us = self.ns / 1e3
         self.ms = self.ns / 1e6
         self.s = self.ns / 1e9

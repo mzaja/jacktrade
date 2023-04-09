@@ -21,9 +21,10 @@ from time import sleep
 
 with CodeTimer() as ct:
     # Enter code to time here
-    sleep(0.1)  # Simulate a piece of code
+    sleep(0.1)  # Simulates a piece of code
 
-# "Code execution took 100 ms." gets printed out.
+# Prints: "Code execution took 100 ms."
+(ct.ns, ct.us, ct.ms. ct.s)  # Access code duration in nano/micro/milli/seconds.
 ```
 
 ## Collections
@@ -40,9 +41,9 @@ get_first_dict_value(dict_data)     # Returns: 1
 
 # Iterable utilities
 list_data = [1, 2, [3, 4], 5, 6]
-flatten_list(list_data)                     # Returns: [1, 2, 3, 4, 5, 6]
-list(chunkify(list_data, chunk_size=2))     # Returns: [[1, 2], [[3, 4], 5], [6]]
-list(limit_iterator(list_data, limit=3))    # Returns: [1, 2, [3, 4]]
+flatten_list(list_data)             # Returns: [1, 2, 3, 4, 5, 6]
+chunkify(list_data, chunk_size=2)   # Yields: [1, 2], [[3, 4], 5], [6]
+limit_iterator(list_data, limit=3)  # Yields: 1, 2, [3, 4]
 ```
 
 ## Multicore
@@ -53,9 +54,7 @@ Usage example (does not work in the interactive interpreter):
 from jacktrade.multicore import do_multicore_work
 
 def worker(first, second) -> tuple:
-    """
-    Receives two arguments and returns them as a tuple.
-    """
+    """Receives two arguments and returns them as a tuple."""
     return (first, second)
 
 def worker_done_callback(future):

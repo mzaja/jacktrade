@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "jacktrade"
-version = "0.1.0"
+version = "0.1.1"
 authors = [
   { name="Mario Zaja", email="mzaja0@gmail.com" },
 ]
@@ -13,7 +13,8 @@ readme = "README.md"
 license = { file = "LICENSE.md" }
 requires-python = ">=3.10"
 classifiers = [
-    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]

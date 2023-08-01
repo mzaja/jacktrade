@@ -73,6 +73,10 @@ class CollectionsTest(unittest.TestCase):
                 self.assertEqual(last_exp, chunks[-1])
                 self.assertEqual(count_exp, len(chunks))
 
+    def test_chunkify_infinite_chunk_size(self):
+        """Tests chunkify when chunk_size is not specified, making it infinite."""
+        self.assertEqual(list(chunkify(LONG_LIST, None)), [LONG_LIST])
+
     def test_ichunkify(self):
         """Tests ichunkify function."""
         for chunk_size, first_exp, last_exp, count_exp in CHUNKIFY_TEST_PARAMS:
@@ -89,6 +93,10 @@ class CollectionsTest(unittest.TestCase):
                 self.assertEqual(first_exp, first_chunk)
                 self.assertEqual(last_exp, last_chunk)
                 self.assertEqual(count_exp, chunk_count)
+
+    def test_ichunkify_infinite_chunk_size(self):
+        """Tests ichunkify when chunk_size is not specified, making it infinite."""
+        self.assertEqual(list(next(ichunkify(LONG_LIST, None))), LONG_LIST)
 
     def test_limited_iterator(self):
         """Tests limiting the iterator to max elements."""

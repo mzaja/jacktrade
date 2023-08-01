@@ -67,17 +67,17 @@ def flatten_list(input_data: list, max_depth: int = 999) -> list:
     return output_data
 
 
-def chunkify(iterable: Iterable, chunk_size: int) -> Iterator[list]:
+def chunkify(iterable: Iterable, chunk_size: int = None) -> Iterator[list]:
     """
     Yields successive n-sized list chunks from an iterable.
     Supports generator expressions.
     """
-    iterator = iter(iterable)
+    iterator = iter(iterable)  # Must be assigned here, else infinite loop
     while chunk := list(islice(iterator, chunk_size)):
         yield chunk
 
 
-def ichunkify(iterable: Iterable, chunk_size: int) -> Iterator[Iterator]:
+def ichunkify(iterable: Iterable, chunk_size: int = None) -> Iterator[Iterator]:
     """
     Yields successive n-sized iterator chunks from an iterable.
     Supports generator expressions.
@@ -86,8 +86,9 @@ def ichunkify(iterable: Iterable, chunk_size: int) -> Iterator[Iterator]:
                 the results will not be as expected!
     """
     iterator = iter(iterable)
+    chunk_size_minus_one = None if (chunk_size is None) else (chunk_size - 1)
     for first_chunk_elem in iterator:
-        yield chain([first_chunk_elem], islice(iterator, chunk_size - 1))
+        yield chain([first_chunk_elem], islice(iterator, chunk_size_minus_one))
 
 
 def limit_iterator(iterable: Iterable, limit: int = None) -> Iterator:

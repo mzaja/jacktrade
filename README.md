@@ -9,6 +9,7 @@ pip install jacktrade
 The package consists of the following submodules:
 
 - [Benchmark](#benchmark)
+- [Buffers](#buffers)
 - [Collections](#collections)
 - [Multicore](#multicore)
 - [Pickler](#pickler)
@@ -16,7 +17,7 @@ The package consists of the following submodules:
 ## Benchmark
 Contains a `CodeTimer` class which is used to elegantly and precisely time a piece of code:
 ```py
-from jacktrade.benchmark import CodeTimer
+from jacktrade import CodeTimer
 from time import sleep
 
 with CodeTimer() as ct:
@@ -27,10 +28,26 @@ with CodeTimer() as ct:
 (ct.ns, ct.us, ct.ms. ct.s)  # Access code duration in nano/micro/milli/seconds.
 ```
 
+## Buffers
+Contains a `StringBuffers` class, whose purpose is to reduce the number of I/O operations
+when writing to files. By speficying `buffer_size` parameter, the contents of the buffer
+are automatically flushed to disk when the buffer fills up. The class handles any number
+of simultaneously "open" files.
+
+```py
+from jacktrade import StringBuffers
+
+output_file = "out.txt"
+buffers = StringBuffers(output_dir="text", buffer_size=3)
+buffers.add(output_file, "Hello")   # Nothing is written out
+buffers.add(output_file, " world")  # Nothing is written out
+buffers.add(output_file, "!")  # "Hello world!" is written to ./text/out.txt
+```
+
 ## Collections
 Contains utility functions for working with collections, namely dictionaries and iterables. Usage examples include:
 ```py
-from jacktrade.collections import *
+from jacktrade import *
 
 # Dict utilities
 dict_data = {"a": 1, "b": {"c": 2}}
@@ -51,7 +68,7 @@ Provides an elegant and memory-efficient way to process data using multiple core
 
 Usage example (does not work in the interactive interpreter):
 ```py
-from jacktrade.multicore import do_multicore_work
+from jacktrade import do_multicore_work
 
 def worker(first, second) -> tuple:
     """Receives two arguments and returns them as a tuple."""
@@ -70,7 +87,7 @@ if __name__ == "__main__":
 ## Pickler
 This tiny module contains two convenience functions for pickling and unpickling Python objects, making it possible to do so with a single function call (a feature missing from `pickle` module):
 ```py
-from jacktrade.pickler import pickle_object, unpickle_object
+from jacktrade import pickle_object, unpickle_object
 
 pickle_object(obj := [1, 2, 3], filename := "obj.pickle")   # Pickles obj to obj.pickle file
 assert unpickle_object(filename) == obj     # Unpickle obj.pickle and test equality with obj

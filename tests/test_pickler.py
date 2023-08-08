@@ -2,7 +2,7 @@ import tempfile
 import os.path
 import unittest
 
-from jacktrade.pickler import pickle_object, unpickle_object
+from jacktrade import pickle_object, unpickle_object
 
 
 class PickerTest(unittest.TestCase):

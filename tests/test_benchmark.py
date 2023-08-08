@@ -2,7 +2,7 @@ import unittest
 from unittest import mock
 from time import sleep
 
-from jacktrade.benchmark import CodeTimer
+from jacktrade import CodeTimer
 
 
 class CodeTimerTest(unittest.TestCase):

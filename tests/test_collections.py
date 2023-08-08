@@ -1,7 +1,7 @@
 import unittest
 from typing import Iterator
 
-from jacktrade.collections import (
+from jacktrade import (
     flatten_dict,
     get_first_dict_item,
     get_first_dict_key,

@@ -2,7 +2,7 @@ import unittest
 from unittest import mock
 from multiprocessing import cpu_count
 
-from jacktrade.multicore import do_multicore_work
+from jacktrade import do_multicore_work
 
 # ---------------------------------------------------------------------------
 # TEST FIXTURES

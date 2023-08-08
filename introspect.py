@@ -2,8 +2,8 @@
 # FUNCTIONS
 # ---------------------------------------------------------------------------
 def display_attrs(obj, attrs=None):
-    if attrs is None:   # if used as a standalone function
-        attrs = [a for a in dir(obj) if not a.startswith('__')]
+    if attrs is None:  # if used as a standalone function
+        attrs = [a for a in dir(obj) if not a.startswith("__")]
         print(type(obj))
     if len(attrs) > 0:
         max_len = max(len(a) for a in attrs)
@@ -24,14 +24,16 @@ def display_attr_diffs(obj1, obj2):
 
 
 def display_common_attrs(obj1, obj2):
-    common_attrs = [x for x in dir(obj1) if (x in dir(obj2)) and (not x.startswith("__"))]
+    common_attrs = [
+        x for x in dir(obj1) if (x in dir(obj2)) and (not x.startswith("__"))
+    ]
     print(f">>> Common to\n{type(obj1)} AND \n{type(obj2)}:")
     display_attrs(obj1, common_attrs)
 
 
-def analyse_objects(obj1, obj2 = None):
+def analyse_objects(obj1, obj2=None):
     """
-    Displays the attributes of the two provided objects, 
+    Displays the attributes of the two provided objects,
     their common attributes and their attribute differences.
     """
     display_attrs(obj1)

@@ -1,5 +1,9 @@
 # Release History
 
+## 0.3.0 (2023-08-11)
+### Improvements
+- Added `merge_csv_files` function.
+
 ## 0.2.1 (2023-08-08)
 ### Improvements
 - Documentation updated with `StringBuffers` example and new import syntax.

@@ -65,7 +65,7 @@ limit_iterator(list_data, limit=3)  # Yields: 1, 2, [3, 4]
 ```
 
 ## Files
-Provides utilities for working with files. Currently it contains only a single method for merging CSV files.
+Provides utilities for working with files. Currently it contains only a single function for merging CSV files.
 ```py
 from jacktrade import merge_csv_files
 

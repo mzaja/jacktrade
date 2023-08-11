@@ -4,5 +4,6 @@
 from .benchmark import *
 from .buffers import *
 from .collections import *
+from .files import *
 from .multicore import *
 from .pickler import *

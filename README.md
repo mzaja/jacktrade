@@ -11,6 +11,7 @@ The package consists of the following submodules:
 - [Benchmark](#benchmark)
 - [Buffers](#buffers)
 - [Collections](#collections)
+- [Files](#files)
 - [Multicore](#multicore)
 - [Pickler](#pickler)
 
@@ -61,6 +62,18 @@ list_data = [1, 2, [3, 4], 5, 6]
 flatten_list(list_data)             # Returns: [1, 2, 3, 4, 5, 6]
 chunkify(list_data, chunk_size=2)   # Yields: [1, 2], [[3, 4], 5], [6]
 limit_iterator(list_data, limit=3)  # Yields: 1, 2, [3, 4]
+```
+
+## Files
+Provides utilities for working with files. Currently it contains only a single method for merging CSV files.
+```py
+from jacktrade import merge_csv_files
+
+# Merges A.csv and B.csv into AB.csv without duplicating headers
+merge_csv_files(["A.csv", "B.csv"], "AB.csv")
+
+# Merges A.csv and B.csv into AB.csv verbatim, treating headers as data
+merge_csv_files(["A.csv", "B.csv"], "AB.csv", has_headers=False)
 ```
 
 ## Multicore

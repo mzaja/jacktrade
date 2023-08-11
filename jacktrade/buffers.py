@@ -3,6 +3,9 @@ from collections import defaultdict, deque
 from typing import Iterator
 
 
+# ---------------------------------------------------------------------------
+# CLASSES
+# ---------------------------------------------------------------------------
 class StringBuffers:
     """
     Sorts, stores and flushes string data to a disk. The main purpose

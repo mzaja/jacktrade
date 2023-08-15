@@ -10,7 +10,7 @@ authors = [
 ]
 description = "A collection of commonly used Python utilities."
 readme = "README.md"
-license = { file = "LICENSE.md" }
+license = { text = "MIT License" }
 requires-python = ">=3.10"
 classifiers = [
     "Programming Language :: Python :: 3.10",

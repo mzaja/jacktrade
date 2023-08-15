@@ -19,31 +19,32 @@ class SysenvTest(unittest.TestCase):
         Tests detecting whether the code is running from a virtual environment.
         """
         in_virtual_environment()  # Hit for code coverage
-        # Not running in venv (will not work if launched from venv)
-        self.assertEqual(
-            subprocess.check_output(f'python -c "{PYTHON_CMDS}"').decode(), "False"
-        )
-        # Running in venv
+
         with TemporaryDirectory() as tmpd:
             venv_path = str(Path(tmpd) / "venv")
-            cmd_install_venv = f'python -m venv "{venv_path}"'
             operating_system = platform.system()
             if operating_system == "Windows":
-                commands = " & ".join(
-                    [
-                        cmd_install_venv,
-                        f'{venv_path}\\Scripts\\python.exe -c "{PYTHON_CMDS}"',
-                    ]
-                )
-            elif operating_system in ("Linux", "Darwin"):  # Darwin is MacOS
-                commands = "; ".join(
-                    [
-                        cmd_install_venv,
-                        f'source {venv_path}/bin/python -c "{PYTHON_CMDS}"',
-                    ]
-                )
+                python = "python"
+                sep = " & "
+                test_cmd = f'{venv_path}\\Scripts\\python.exe -c "{PYTHON_CMDS}"'
+            elif operating_system in ("Linux", "Darwin"):
+                python = "python3"
+                sep = "; "
+                test_cmd = f'source {venv_path}/bin/python -c "{PYTHON_CMDS}"'
             else:
                 raise NotImplementedError("Operating system not supported.")
+            # Running outside of venv (will not work if launched from venv)
+            self.assertEqual(
+                subprocess.check_output(f'{python} -c "{PYTHON_CMDS}"').decode(),
+                "False",
+            )
+            # Running in venv
+            commands = sep.join(
+                [
+                    f'{python} -m venv "{venv_path}"',
+                    test_cmd,
+                ]
+            )
             self.assertEqual(
                 subprocess.check_output(commands, shell=True).decode(), "True"
             )

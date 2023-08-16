@@ -1,5 +1,9 @@
 # Release History
 
+## 0.4.0 (2023-08-16)
+### Improvements
+- Added `in_virtual_environment` function.
+
 ## 0.3.0 (2023-08-11)
 ### Improvements
 - Added `merge_csv_files` function.

@@ -14,6 +14,7 @@ The package consists of the following submodules:
 - [Files](#files)
 - [Multicore](#multicore)
 - [Pickler](#pickler)
+- [Systenv](#sysenv)
 
 ## Benchmark
 Contains a `CodeTimer` class which is used to elegantly and precisely time a piece of code:
@@ -104,4 +105,12 @@ from jacktrade import pickle_object, unpickle_object
 
 pickle_object(obj := [1, 2, 3], filename := "obj.pickle")   # Pickles obj to obj.pickle file
 assert unpickle_object(filename) == obj     # Unpickle obj.pickle and test equality with obj
+```
+
+## Sysenv
+Contains utilities for interacting with the operating system and the environment.
+```py
+from jacktrade import in_virtual_environment
+
+in_virtual_environment()  # True if called inside venv, else False
 ```

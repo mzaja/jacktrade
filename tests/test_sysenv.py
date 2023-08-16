@@ -21,16 +21,16 @@ class SysenvTest(unittest.TestCase):
         in_virtual_environment()  # Hit for code coverage
 
         with TemporaryDirectory() as tmpd:
-            venv_path = str(Path(tmpd) / "venv")
+            venv_path = Path(tmpd).resolve() / "venv"
             operating_system = platform.system()
             if operating_system == "Windows":
                 python = "python"
                 sep = " & "
-                test_cmd = f'{venv_path}\\Scripts\\python.exe -c "{PYTHON_CMDS}"'
+                test_cmd = f'"{venv_path}\\Scripts\\python.exe" -c "{PYTHON_CMDS}"'
             elif operating_system in ("Linux", "Darwin"):
                 python = "python3"
                 sep = "; "
-                test_cmd = f'{venv_path}/bin/python -c "{PYTHON_CMDS}"'
+                test_cmd = f'"{venv_path}/bin/python" -c "{PYTHON_CMDS}"'
             else:
                 raise NotImplementedError("Operating system not supported.")
             # Running outside of venv (will not work if launched from venv)

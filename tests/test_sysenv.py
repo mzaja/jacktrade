@@ -30,12 +30,12 @@ class SysenvTest(unittest.TestCase):
             elif operating_system in ("Linux", "Darwin"):
                 python = "python3"
                 sep = "; "
-                test_cmd = f'source {venv_path}/bin/python -c "{PYTHON_CMDS}"'
+                test_cmd = f'{venv_path}/bin/python -c "{PYTHON_CMDS}"'
             else:
                 raise NotImplementedError("Operating system not supported.")
             # Running outside of venv (will not work if launched from venv)
             self.assertEqual(
-                subprocess.check_output(f'{python} -c "{PYTHON_CMDS}"').decode(),
+                subprocess.check_output(f'{python} -c "{PYTHON_CMDS}"', shell=True).decode(),
                 "False",
             )
             # Running in venv

@@ -35,7 +35,9 @@ class SysenvTest(unittest.TestCase):
                 raise NotImplementedError("Operating system not supported.")
             # Running outside of venv (will not work if launched from venv)
             self.assertEqual(
-                subprocess.check_output(f'{python} -c "{PYTHON_CMDS}"', shell=True).decode(),
+                subprocess.check_output(
+                    f'{python} -c "{PYTHON_CMDS}"', shell=True
+                ).decode(),
                 "False",
             )
             # Running in venv

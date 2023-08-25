@@ -14,7 +14,7 @@ The package consists of the following submodules:
 - [Files](#files)
 - [Multicore](#multicore)
 - [Pickler](#pickler)
-- [Systenv](#sysenv)
+- [Sysenv](#sysenv)
 
 ## Benchmark
 Contains a `CodeTimer` class which is used to elegantly and precisely time a piece of code:

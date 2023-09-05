@@ -198,6 +198,20 @@ class BaseMappingTest(unittest.TestCase):
                 skip_exceptions=(TypeError,),
             )
 
+    def test_repr(self):
+        """Tests that __repr__ magic method displays the name of the derived class."""
+
+        class DerivedMapping(BaseMapping):
+            def __init__(self, items):
+                # This is not how one would usually use a class
+                super().__init__(items, lambda x: x[0], lambda x: x[1])
+
+        mapping = repr(DerivedMapping([("Will", 29)]))
+        # Derived class name is displated first
+        self.assertTrue(mapping.startswith("DerivedMapping"))
+        # Contents are also displayed, like in a normal dict
+        self.assertIn(repr({"Will": 29}), mapping)
+
 
 if __name__ == "__main__":
     unittest.main()

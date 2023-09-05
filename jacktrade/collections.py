@@ -1,5 +1,5 @@
 from itertools import chain, islice
-from typing import Any, Iterable, Iterator
+from typing import Any, Callable, Hashable, Iterable, Iterator, Optional, TypeVar
 
 
 # ---------------------------------------------------------------------------
@@ -100,3 +100,44 @@ def limit_iterator(iterable: Iterable, limit: int = None) -> Iterator:
         if limit and (count > limit):
             return
         yield item
+
+
+# ---------------------------------------------------------------------------
+# MAPPINGS
+# ---------------------------------------------------------------------------
+T = TypeVar("T")
+
+
+class BaseMapping(dict):
+    """
+    Base mapping where each key and value are obtained by applying a getter to
+    each item in the iterable.
+    """
+
+    def __init__(
+        self,
+        items: Iterable[T],
+        key_getter: Callable[[T], Hashable],
+        value_getter: Callable[[T], Any],
+        condition: Optional[Callable[[T], bool]] = None,
+        skip_exceptions: tuple[type[Exception]] = (),
+    ) -> None:
+        """
+        Parameters:
+            - items: An iterable of items of the same type to create a mapping from.
+            - key_getter: A function accepting an item and returning a hashable dict key.
+            - value_getter: A function accepting an item and returning a dict value.
+            - condition: A function accepting an item and returning a boolean value
+                         indicating if the item should be included in the mapping.
+            - skip_exceptions: A tuple of exceptions which, if they appear during the
+                               mapping construction, discard that item instead of raising.
+        """
+        for item in items:
+            try:
+                if condition is None or condition(item):
+                    self[key_getter(item)] = value_getter(item)
+            except skip_exceptions:
+                pass
+
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}({dict(self)})"

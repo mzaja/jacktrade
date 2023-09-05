@@ -65,6 +65,34 @@ chunkify(list_data, chunk_size=2)   # Yields: [1, 2], [[3, 4], 5], [6]
 limit_iterator(list_data, limit=3)  # Yields: 1, 2, [3, 4]
 ```
 
+`BaseMapping` is a generic base class used to create `dict` subclasses which automatically map keys to values from a collection of objects of the same type. It is used like so:
+```py
+from jacktrade import BaseMapping
+
+class NameAgeLookup(BaseMapping):
+    """
+    Maps a person's name to its age if the person is over 18 years old.
+    """
+
+    def __init__(self, persons):
+        super().__init__(
+            items=persons,
+            key_getter=lambda p: p["name"],
+            value_getter=lambda p: p["age"],
+            condition=lambda p: p["age"] > 18,
+        )
+
+mapping = NameAgeLookup(
+    [
+        {"name": "Jack", "age": 15},
+        {"name": "Mike", "age": 27},
+        {"name": "Pete", "age": 39},
+    ]
+)
+
+assert mapping == {"Mike": 27, "Pete": 39}  # Passes
+```
+
 ## Files
 Provides utilities for working with files. Currently it contains only a single function for merging CSV files.
 ```py

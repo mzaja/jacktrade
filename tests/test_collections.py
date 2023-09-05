@@ -1,7 +1,9 @@
 import unittest
+from dataclasses import dataclass
 from typing import Iterator
 
 from jacktrade import (
+    BaseMapping,
     chunkify,
     flatten_dict,
     flatten_list,
@@ -25,6 +27,24 @@ CHUNKIFY_TEST_PARAMS = [
     (5, [1, 2, 3, 4, 5], [16, 17, 18, 19, 20], 4),
     (99, LONG_LIST, LONG_LIST, 1),
 ]
+
+
+@dataclass
+class Person:
+    """For testing BaseMapping."""
+
+    name: str
+    age: int
+    alive: bool
+
+
+PEOPLE = (
+    Person("John Doe", 27, True),
+    Person("Jane Doe", 39, True),
+    Person("David Hume", 313, False),
+)
+
+CORRUPT_PEOPLE = (Person("Zargothrax", "666", None), None)
 
 
 # ---------------------------------------------------------------------------
@@ -104,6 +124,79 @@ class CollectionsTest(unittest.TestCase):
         self.assertEqual(list(limit_iterator(iter(LONG_LIST), 5)), [1, 2, 3, 4, 5])
         self.assertEqual(list(limit_iterator(LONG_LIST, 99)), LONG_LIST)
         self.assertEqual(list(limit_iterator(iter(LONG_LIST), 99)), LONG_LIST)
+
+
+class BaseMappingTest(unittest.TestCase):
+    """
+    Tests BaseMapping class.
+    """
+
+    @staticmethod
+    def first_name_getter(person: Person) -> str:
+        return person.name.split(" ")[0]
+
+    @staticmethod
+    def age_getter(person: Person) -> int:
+        return person.age
+
+    @staticmethod
+    def is_alive(person: Person) -> bool:
+        return person.alive is True
+
+    @staticmethod
+    def is_less_than_30(person: Person) -> bool:
+        return person.age < 30
+
+    def test_basic_mapping(self):
+        """Tests basic mapping with key and value getters."""
+        mapping = BaseMapping(PEOPLE, self.first_name_getter, self.age_getter)
+        expected_result = {"John": 27, "Jane": 39, "David": 313}
+        self.assertEqual(mapping, expected_result)
+
+    def test_with_condition(self):
+        """Tests mapping with a condition function provided."""
+        mapping = BaseMapping(
+            PEOPLE, self.first_name_getter, self.age_getter, self.is_less_than_30
+        )
+        expected_result = {"John": 27}
+        self.assertEqual(mapping, expected_result)
+        mapping = BaseMapping(
+            PEOPLE, self.first_name_getter, self.age_getter, self.is_alive
+        )
+        expected_result = {"John": 27, "Jane": 39}
+        self.assertEqual(mapping, expected_result)
+
+    def test_skip_exceptions(self):
+        """Tests discarding elements which trigger an exception."""
+        mapping = BaseMapping(
+            PEOPLE + CORRUPT_PEOPLE,
+            self.first_name_getter,
+            self.age_getter,
+            self.is_less_than_30,
+            skip_exceptions=(TypeError, AttributeError),
+        )
+        expected_result = {"John": 27}
+        self.assertEqual(mapping, expected_result)
+
+    def test_raise_exceptions(self):
+        """Exception is raised because not all errors are handled."""
+        # Skip no exceptions
+        with self.assertRaises(TypeError):
+            mapping = BaseMapping(
+                PEOPLE + CORRUPT_PEOPLE,
+                self.first_name_getter,  # Raises AttributeError (2nd)
+                self.age_getter,
+                self.is_less_than_30,  # Raises TypeError (1st)
+            )
+        # Skip first exception but not the second one
+        with self.assertRaises(AttributeError):
+            mapping = BaseMapping(
+                PEOPLE + CORRUPT_PEOPLE,
+                self.first_name_getter,  # Raises AttributeError (2nd)
+                self.age_getter,
+                self.is_less_than_30,  # Raises TypeError (1st)
+                skip_exceptions=(TypeError,),
+            )
 
 
 if __name__ == "__main__":

@@ -1,6 +1,6 @@
 import unittest
-from unittest import mock
 from time import sleep
+from unittest import mock
 
 from jacktrade import CodeTimer
 

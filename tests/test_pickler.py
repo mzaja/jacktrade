@@ -1,5 +1,5 @@
-import tempfile
 import os.path
+import tempfile
 import unittest
 
 from jacktrade import pickle_object, unpickle_object

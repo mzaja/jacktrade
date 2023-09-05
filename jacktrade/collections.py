@@ -1,5 +1,5 @@
-from typing import Iterator, Iterable, Any
-from itertools import islice, chain
+from itertools import chain, islice
+from typing import Any, Iterable, Iterator
 
 
 # ---------------------------------------------------------------------------

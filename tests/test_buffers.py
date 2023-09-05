@@ -4,7 +4,6 @@ from tempfile import TemporaryDirectory
 
 from jacktrade import StringBuffers
 
-
 FILE_1 = "abc.txt"
 FILE_2 = "def.txt"
 TEST_DATA = [

@@ -2,3 +2,4 @@
 black
 coverage
 coveralls
+pre-commit

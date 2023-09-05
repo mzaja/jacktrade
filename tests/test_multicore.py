@@ -1,6 +1,6 @@
 import unittest
-from unittest import mock
 from multiprocessing import cpu_count
+from unittest import mock
 
 from jacktrade import do_multicore_work
 

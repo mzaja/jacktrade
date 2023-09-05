@@ -1,5 +1,5 @@
-from pathlib import Path
 from collections import defaultdict, deque
+from pathlib import Path
 from typing import Iterator
 
 

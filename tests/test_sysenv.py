@@ -1,8 +1,8 @@
-import unittest
-from tempfile import TemporaryDirectory
-import subprocess
 import platform
+import subprocess
+import unittest
 from pathlib import Path
+from tempfile import TemporaryDirectory
 
 from jacktrade import in_virtual_environment
 

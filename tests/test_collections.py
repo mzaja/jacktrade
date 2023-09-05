@@ -2,12 +2,12 @@ import unittest
 from typing import Iterator
 
 from jacktrade import (
+    chunkify,
     flatten_dict,
+    flatten_list,
     get_first_dict_item,
     get_first_dict_key,
     get_first_dict_value,
-    flatten_list,
-    chunkify,
     ichunkify,
     limit_iterator,
 )

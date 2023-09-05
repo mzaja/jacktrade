@@ -27,7 +27,7 @@ with CodeTimer() as ct:
     sleep(0.1)  # Simulates a piece of code
 
 # Prints: "Code execution took 100 ms."
-(ct.ns, ct.us, ct.ms. ct.s)  # Access code duration in nano/micro/milli/seconds.
+(ct.ns, ct.us, ct.ms, ct.s)  # Access code duration in nano/micro/milli/seconds.
 ```
 
 ## Buffers

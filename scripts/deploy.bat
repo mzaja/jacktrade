@@ -9,21 +9,27 @@
 @REM Manually execute the command below to upload to PyPI
 @REM python -m twine upload dist/*
 
+@REM =========================================================
 @REM Check history, commit, tag the release and push to remote
+@REM =========================================================
+@REM Set release version here:
 SET RELEASE_VERSION=0.5.0
+
+@REM Check that release version is present in changelog
 FINDSTR %RELEASE_VERSION% "HISTORY.md"
 IF %ERRORLEVEL% NEQ 0 (
     ECHO HISTORY.md does not contain the release version!
     EXIT /B 1
-) ELSE (
-    pre-commit run
-    IF %ERRORLEVEL% NEQ 0 (
-        ECHO pre-commit found errors and modified files!
-        EXIT /B 1
-    )
-    git add .
-    git commit -m "Prepare release %RELEASE_VERSION%"
-    git tag v%RELEASE_VERSION%
-    git push
-    git push --tags
 )
+@REM Run pre-commit on all files
+pre-commit run
+IF %ERRORLEVEL% NEQ 0 (
+    ECHO pre-commit found errors and modified files!
+    EXIT /B 1
+)
+@REM Stage and commit files, add tags and push
+git add .
+git commit -m "Prepare release %RELEASE_VERSION%"
+git tag v%RELEASE_VERSION%
+git push
+git push --tags

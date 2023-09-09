@@ -1,5 +1,11 @@
 # Release History
 
+## 0.5.0 (2023-09-09)
+### Improvements
+- Added `BaseMapping` class.
+### Fixes
+- Corrected a typo in readme.
+
 ## 0.4.0 (2023-08-16)
 ### Improvements
 - Added `in_virtual_environment` function.

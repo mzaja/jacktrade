@@ -2,9 +2,12 @@
 requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
+[tool.setuptools]
+packages = ["jacktrade"]
+
 [project]
 name = "jacktrade"
-version = "0.4.0"
+version = "0.5.0"
 authors = [
   { name="Mario Zaja", email="mzaja0@gmail.com" },
 ]

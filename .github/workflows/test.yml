@@ -11,10 +11,6 @@ on:
     - main
     paths-ignore:
     - '**.md'
-#   schedule:
-    # Run CI once a month to ensure compatibility with newest packages
-    # * is a special character in YAML so you have to quote this string
-    # - cron:  '37 13 1 * *'
 
 jobs:
   test:
@@ -38,6 +34,7 @@ jobs:
     - name: Check formatting
       run: |
         black --check tests jacktrade
+        isort --check tests jacktrade
     - name: Run tests
       run: |
         coverage run --source=jacktrade -m unittest discover -s tests -b

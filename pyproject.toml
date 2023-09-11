@@ -5,6 +5,9 @@ build-backend = "setuptools.build_meta"
 [tool.setuptools]
 packages = ["jacktrade"]
 
+[tool.isort]
+profile = "black"
+
 [project]
 name = "jacktrade"
 version = "0.5.0"

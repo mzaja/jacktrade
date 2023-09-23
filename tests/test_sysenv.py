@@ -3,8 +3,9 @@ import subprocess
 import unittest
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from unittest.mock import Mock, patch
 
-from jacktrade import in_virtual_environment
+from jacktrade import *
 
 PYTHON_CMDS = "import os;import sys;sys.path.insert(0, os.getcwd());from jacktrade import in_virtual_environment;print(in_virtual_environment(),end='');"
 
@@ -50,6 +51,50 @@ class SysenvTest(unittest.TestCase):
             self.assertEqual(
                 subprocess.check_output(commands, shell=True).decode(), "True"
             )
+
+
+@patch("subprocess.run")
+class PowerManagementTest(unittest.TestCase):
+    """
+    Tests power management functions.
+
+    Note that, for obvious reasons, these tests do not validate that
+    the intended side effect actually occurs, only that a function
+    calls a particular command under particular circumstances.
+    """
+
+    FUNCTIONS = (suspend, hibernate, shutdown, restart)
+
+    @patch("platform.system", return_value="Windows")
+    def test_power_management_windows(self, mock_system: Mock, mock_run: Mock):
+        """Tests power management calls on Windows."""
+        cmds = (
+            "Rundll32.exe Powrprof.dll,SetSuspendState Sleep",
+            "shutdown /h",
+            "shutdown /s",
+            "shutdown /r",
+        )
+        for func, cmd in zip(self.FUNCTIONS, cmds):
+            func()
+            mock_run.assert_called_with(cmd)
+
+    @patch("platform.system", return_value="Linux")
+    def test_power_management_linux(self, mock_system: Mock, mock_run: Mock):
+        cmds = (
+            "systemctl suspend",
+            "systemctl hibernate",
+            "shutdown -h now",
+            "shutdown -r now",
+        )
+        for func, cmd in zip(self.FUNCTIONS, cmds):
+            func()
+            mock_run.assert_called_with(cmd)
+
+    @patch("platform.system", return_value="Mythical")
+    def test_power_management_others(self, mock_system: Mock, mock_run: Mock):
+        for func in self.FUNCTIONS:
+            with self.assertRaisesRegex(NotImplementedError, "Mythical"):
+                func()
 
 
 if __name__ == "__main__":

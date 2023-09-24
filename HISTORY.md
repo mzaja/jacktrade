@@ -32,12 +32,12 @@
 
 ## 0.1.2 (2023-08-01)
 ### Improvements
-- Chunk size is infinite if set to None.
+- Chunk size is infinite if set to `None`.
 
 ## 0.1.1 (2023-04-09)
 ### Improvements
 - Documentation updated.
-- Removed redundant statement in CodeTimer class.
+- Removed redundant statement in `CodeTimer` class.
 
 ## 0.1.0 (2023-04-09)
 First release.

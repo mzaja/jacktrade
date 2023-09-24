@@ -5,7 +5,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from unittest.mock import Mock, patch
 
-from jacktrade import *
+from jacktrade import hibernate, in_virtual_environment, restart, shutdown, suspend
 
 PYTHON_CMDS = "import os;import sys;sys.path.insert(0, os.getcwd());from jacktrade import in_virtual_environment;print(in_virtual_environment(),end='');"
 

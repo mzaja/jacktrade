@@ -1,5 +1,12 @@
 # Release History
 
+## 0.6.0 (2023-09-24)
+### Improvements
+- Added Windows and Linux power management commands.
+- `CodeTimer` instances can be used as decorators.
+### Fixes
+- Top-level module interface contains no latent imports from other packages.
+
 ## 0.5.0 (2023-09-09)
 ### Improvements
 - Added `BaseMapping` class.

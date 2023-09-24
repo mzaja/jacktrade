@@ -13,14 +13,14 @@
 @REM Check history, commit, tag the release and push to remote
 @REM =========================================================
 @REM Set release version here:
-SET RELEASE_VERSION=0.5.0
+SET RELEASE_VERSION=0.6.0
 
 @REM Check that the distribution has been built already
-IF NOT EXIST "dist\betfairdatabase-%RELEASE_VERSION%-py3-none-any.whl" (
+IF NOT EXIST "dist\jacktrade-%RELEASE_VERSION%-py3-none-any.whl" (
     ECHO Wheel missing for the current release!
     EXIT 1
 )
-IF NOT EXIST "dist\betfairdatabase-%RELEASE_VERSION%.tar.gz" (
+IF NOT EXIST "dist\jacktrade-%RELEASE_VERSION%.tar.gz" (
     ECHO tar.gz missing for the current release!
     EXIT 1
 )

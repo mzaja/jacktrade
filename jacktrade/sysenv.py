@@ -19,7 +19,7 @@ def _execute_os_specific_commands(windows_cmd: str = None, linux_cmd: str = None
         case "Windows" if windows_cmd:
             subprocess.run(windows_cmd)
         case "Linux" if linux_cmd:
-            subprocess.run(linux_cmd)
+            subprocess.run(linux_cmd, shell=True)
         case str(p):
             raise NotImplementedError(f"System '{p}' is not supported.")
 

@@ -88,7 +88,7 @@ class PowerManagementTest(unittest.TestCase):
         )
         for func, cmd in zip(self.FUNCTIONS, cmds):
             func()
-            mock_run.assert_called_with(cmd)
+            mock_run.assert_called_with(cmd, shell=True)
 
     @patch("platform.system", return_value="Mythical")
     def test_power_management_others(self, mock_system: Mock, mock_run: Mock):

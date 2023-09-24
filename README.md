@@ -157,5 +157,12 @@ Contains utilities for interacting with the operating system and the environment
 ```py
 from jacktrade import in_virtual_environment
 
+# Power management
+suspend()    # Put the machine into standby
+hibernate()  # Hibernate the machine
+restart()    # Restart the machine
+shutdown()   # Shut down the machine
+
+# Miscellaneous
 in_virtual_environment()  # True if called inside venv, else False
 ```

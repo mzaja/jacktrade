@@ -1,4 +1,7 @@
+import copy
 import time
+from functools import wraps
+from typing import Callable
 
 
 # ---------------------------------------------------------------------------
@@ -9,13 +12,18 @@ class CodeTimer:
     Times a section of code inside a "with" statement.
 
     Example usage:
+        ```py
         with CodeTimer() as t:
             # Code to time
         print(f"Execution took {t.s} seconds / {t.ms} milliseconds / {t.us} microseconds / {t.ns} nanoseconds.")
+        ```
 
     Parameters:
         - no_print: If True, no message will be printed on exiting the timing block.
         - min_digits: Minimal number of digits to display when printing the result.
+        - results:  A list where, if provided, CodeTimer instances holding timing results
+                    are stored after every call. Useful when using the class as a decorator
+                    to store the results of multiple wrapped function calls.
 
     Attributes:
         - ns: Code execution time in nanoseconds.
@@ -26,9 +34,12 @@ class CodeTimer:
 
     UNITS = ("ns", "us", "ms", "s")
 
-    def __init__(self, no_print: bool = False, min_digits: int = 3):
+    def __init__(
+        self, no_print: bool = False, min_digits: int = 3, results: list = None
+    ):
         self._no_print = no_print
         self._min_digits = min_digits
+        self._results = results
         self.ns = -1
         self.us = -1
         self.ms = -1
@@ -47,6 +58,19 @@ class CodeTimer:
             print(
                 f"Code execution took {self._format_time(self.ns, self._min_digits)}."
             )
+        if self._results is not None:
+            self._results.append(copy.copy(self))
+
+    def __call__(self, function: Callable):
+        """For using the class as a decorator."""
+
+        @wraps(function)
+        def wrapper(*args, **kwargs):
+            with self:
+                retval = function(*args, **kwargs)
+            return retval
+
+        return wrapper
 
     @classmethod
     def _format_time(cls, time_ns: int, min_digits: int) -> str:

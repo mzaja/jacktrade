@@ -30,6 +30,23 @@ with CodeTimer() as ct:
 (ct.ns, ct.us, ct.ms, ct.s)  # Access code duration in nano/micro/milli/seconds.
 ```
 
+A `CodeTimer` instance can also be used as a decorator and store results of repeated function calls inside the list provided as `results` argument:
+```py
+from jacktrade import CodeTimer
+from time import sleep
+
+results = []  # A list for storing timing results
+
+@CodeTimer(no_print=True, results=results)
+def sleep_ms(milliseconds: int):
+    sleep(milliseconds / 1000)
+
+sleep_ms(100)  # Call wrapped function
+sleep_ms(200)  # Call again
+print(int(results[0].ms))  # Prints: "100"
+print(int(results[1].ms))  # Prints: "200"
+```
+
 ## Buffers
 Contains a `StringBuffers` class, whose purpose is to reduce the number of I/O operations
 when writing to files. By speficying `buffer_size` parameter, the contents of the buffer

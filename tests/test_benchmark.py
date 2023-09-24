@@ -49,6 +49,33 @@ class CodeTimerTest(unittest.TestCase):
                     )
                     self.assertGreaterEqual(digit_count, min_digits)
 
+    @mock.patch("builtins.print")
+    def test_decorator(self, mock_print: mock.Mock):
+        """Tests that the class can be used as a decorator."""
+
+        @CodeTimer()
+        def func():
+            return 123
+
+        self.assertEqual(func(), 123)
+        mock_print.assert_called_once()
+        self.assertIn("Code execution", mock_print.call_args.args[0])
+
+    def test_results_collection(self):
+        """Tests storing the benchmark results into a user-provided list."""
+        results = []
+
+        @CodeTimer(no_print=True, results=results)
+        def sleep_ms(ms: int):
+            sleep(ms / 1000)
+
+        sleep_ms(10)
+        self.assertAlmostEqual(results[0].ms, 10, delta=2)
+        sleep_ms(20)
+        self.assertAlmostEqual(results[1].ms, 20, delta=2)
+        sleep_ms(30)
+        self.assertAlmostEqual(results[2].ms, 30, delta=2)
+
 
 if __name__ == "__main__":
     unittest.main()

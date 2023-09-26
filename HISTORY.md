@@ -1,5 +1,9 @@
 # Release History
 
+## 0.7.0 (2023-09-26)
+### Improvements
+- Added `Permutations` class.
+
 ## 0.6.0 (2023-09-24)
 ### Improvements
 - Added Windows and Linux power management commands.

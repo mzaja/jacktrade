@@ -1,4 +1,4 @@
-from itertools import chain, islice
+from itertools import chain, islice, product
 from typing import Any, Callable, Hashable, Iterable, Iterator, Optional, TypeVar
 
 
@@ -141,3 +141,53 @@ class BaseMapping(dict):
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}({dict(self)})"
+
+
+# ---------------------------------------------------------------------------
+# COMBINATORICS
+# ---------------------------------------------------------------------------
+class Permutations:
+    """
+    Yields all possible combinations of the named input parameters,
+    returning them as positional (tuple) or keyword (dict) arguments.
+
+    For example:
+    ```py
+    p = Permutations(a=[1, 2, 3], b=["A", "B"])
+    for kwargs in p:
+        # yields:
+        # {"a": 1, "b": "A"}
+        # {"a": 1, "b": "B"}
+        # {"a": 2, "b": "A"}
+        # {"a": 2, "b": "B"}
+        # ...
+    ```
+    """
+
+    def __init__(self, **kwargs: Iterable):
+        self._kwargs = kwargs
+        self._names = tuple(kwargs.keys())
+        self._combinations = tuple(product(*kwargs.values()))
+
+    @property
+    def args(self) -> list[tuple]:
+        """Lists all combinations as tuples (positional arguments)."""
+        return list(self._combinations)
+
+    @property
+    def kwargs(self) -> list[dict[str, Any]]:
+        """Lists all combinations as dicts (keyword arguments)."""
+        return list(self)
+
+    def __iter__(self) -> Iterator[dict[str, Any]]:
+        """
+        Yields a kwarg dictionary with all possible combinations of input parameters.
+        """
+        for values in self._combinations:
+            yield dict(zip(self._names, values))
+
+    def __len__(self) -> int:
+        return len(self._combinations)
+
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}({self._kwargs}"

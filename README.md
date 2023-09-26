@@ -110,6 +110,20 @@ mapping = NameAgeLookup(
 assert mapping == {"Mike": 27, "Pete": 39}  # Passes
 ```
 
+`Permutations` class is used for parametrisation, returning all possible combinations of input parameters:
+```py
+from jacktrade import Permutations
+
+p = Permutations(a=[1, 2, 3], b=["A", "B"])
+p.args    # Returns: [(1, "A"), (1, "B"), (2, "A"), (2, "B"), ...]
+p.kwargs  # Returns: [{"a": 1, "b": "A"}, {"a": 1, "b": "B"}, ...]
+for kwargs in p:
+    # yields:
+    # {"a": 1, "b": "A"}
+    # {"a": 1, "b": "B"}
+    # ...
+```
+
 ## Files
 Provides utilities for working with files. Currently it contains only a single function for merging CSV files.
 ```py

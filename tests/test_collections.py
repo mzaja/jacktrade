@@ -4,6 +4,7 @@ from typing import Iterator
 
 from jacktrade import (
     BaseMapping,
+    Permutations,
     chunkify,
     flatten_dict,
     flatten_list,
@@ -124,6 +125,27 @@ class CollectionsTest(unittest.TestCase):
         self.assertEqual(list(limit_iterator(iter(LONG_LIST), 5)), [1, 2, 3, 4, 5])
         self.assertEqual(list(limit_iterator(LONG_LIST, 99)), LONG_LIST)
         self.assertEqual(list(limit_iterator(iter(LONG_LIST), 99)), LONG_LIST)
+
+    def test_permutations(self):
+        """Tests Permutations class."""
+        kwargs_in = {"n": [1, 2, 3], "c": ["A", "B"]}
+        perms = Permutations(**kwargs_in)
+        kwargs_out = [
+            {"n": 1, "c": "A"},
+            {"n": 1, "c": "B"},
+            {"n": 2, "c": "A"},
+            {"n": 2, "c": "B"},
+            {"n": 3, "c": "A"},
+            {"n": 3, "c": "B"},
+        ]
+        self.assertEqual(len(perms), 6)
+        self.assertEqual(
+            perms.args, [(1, "A"), (1, "B"), (2, "A"), (2, "B"), (3, "A"), (3, "B")]
+        )
+        self.assertEqual(perms.kwargs, kwargs_out)
+        self.assertEqual(list(perms), kwargs_out)  # Tests __iter__
+        self.assertIn(str(kwargs_in), str(perms))  # Tests __repr__
+        self.assertIn(perms.__class__.__name__, str(perms))  # Tests __repr__
 
 
 class BaseMappingTest(unittest.TestCase):

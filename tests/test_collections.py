@@ -285,7 +285,6 @@ class BaseMappingTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             mapping.invert(strict=True)
 
-    # @unittest.skip
     def test__invert_and_cast(self):
         """Tests inverting the mapping and casting it to another mapping type."""
         first_name_getter = self.first_name_getter

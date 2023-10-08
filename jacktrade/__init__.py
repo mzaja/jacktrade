@@ -5,6 +5,7 @@ from .benchmark import CodeTimer
 from .buffers import StringBuffers
 from .collections import (
     BaseMapping,
+    MasterDict,
     Permutations,
     chunkify,
     flatten_dict,

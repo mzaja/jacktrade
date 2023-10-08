@@ -42,6 +42,56 @@ def get_first_dict_value(dictionary: dict) -> Any:
     return next(iter(dictionary.values()), None)
 
 
+class MasterDict:
+    """
+    Holds multiple dicts and provides a simple method to delete keys and values from them all.
+
+    This object is usually used to hold caches, which can then be reliably emptied with
+    a single method call to prevent memory leaks.
+
+    Despite the name, this class is not a dict subtype. However, it can be converted to a
+    dict using as_dict() method.
+    """
+
+    def __init__(self, **subdicts: dict) -> None:
+        """
+        Initialises the master dict with sub-dicts, which are provided as keyword
+        arguments. Argument name is the dict name, while value is the dict object.
+        """
+        for attr, value in subdicts.items():
+            setattr(self, attr, value)
+
+    def delete_keys(self, *keys: Hashable) -> None:
+        """Deletes provided keys from all sub-dictionaries where they are present."""
+        for key in keys:
+            for subdict in self:
+                subdict.pop(key, None)
+
+    def clear_all(self) -> None:
+        """Clears all sub-dicts."""
+        for subdict in self:
+            subdict.clear()
+
+    def as_dict(self) -> dict[str, dict]:
+        """
+        Returns a dictionary representation of itself, where keys are sub-dict names and
+        values are sub-dict objects.
+        """
+        return vars(self)
+
+    def __repr__(self) -> str:
+        return (
+            self.__class__.__name__
+            + "("
+            + ", ".join(f"{n}={d}" for n, d in vars(self).items())
+            + ")"
+        )
+
+    def __iter__(self) -> Iterator[dict]:
+        """Iterates over sub-dicts."""
+        return iter(vars(self).values())
+
+
 # ---------------------------------------------------------------------------
 # ITERABLES
 # ---------------------------------------------------------------------------
@@ -141,6 +191,29 @@ class BaseMapping(dict):
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}({dict(self)})"
+
+    def invert(self, strict: bool = False) -> dict:
+        """
+        Returns an inverse mapping of values to keys.
+
+        When strict=True, ValueError is raised if the values cannot be unambiguously
+        mapped to keys because they are not unique.
+        """
+        if strict and len(set(self.values())) != len(self):
+            raise ValueError("Dict values are not unique.")
+        return {v: k for k, v in self.items()}
+
+    def _invert_and_cast(self, new_type: type[dict], strict: bool) -> dict:
+        """
+        Inverts the keys and values in the dictionary and returns them as a custom mapping type.
+
+        This method is generally reserved for use with BaseMapping subclasses, when the inverse
+        BaseMapping subclass instance is another BaseMapping subclass instance.
+        """
+        inverse_mapping = new_type([])
+        # BaseMapping must be provided explicitly here to avoid infinite recursion
+        inverse_mapping.update(BaseMapping.invert(self, strict))
+        return inverse_mapping
 
 
 # ---------------------------------------------------------------------------

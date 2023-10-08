@@ -4,6 +4,7 @@ from typing import Iterator
 
 from jacktrade import (
     BaseMapping,
+    MasterDict,
     Permutations,
     chunkify,
     flatten_dict,
@@ -148,6 +149,44 @@ class CollectionsTest(unittest.TestCase):
         self.assertIn(perms.__class__.__name__, str(perms))  # Tests __repr__
 
 
+class MasterDictTest(unittest.TestCase):
+    """
+    Tests MasteDict class.
+    """
+
+    def setUp(self) -> None:
+        self.master = MasterDict(
+            letters={1: "A", 2: "B"}, numbers={1: "1", 2: "2", 3: "3"}
+        )
+
+    def test_delete_keys(self):
+        """Tests deleting individual keys from a collection of dicts."""
+        self.master.delete_keys(1, 3)
+        self.assertEqual(self.master.letters, {2: "B"})  # Deleted: 1
+        self.assertEqual(self.master.numbers, {2: "2"})  # Deleted: 1, 3
+
+    def test_clear_all(self):
+        """Tests clearing all sub-dicts."""
+        self.master.clear_all()
+        self.assertEqual(self.master.letters, {})
+        self.assertEqual(self.master.numbers, {})
+
+    def test_as_dict(self):
+        """Tests converting a MasterDict instance to a dict."""
+        self.assertEqual(
+            self.master.as_dict(),
+            {"letters": {1: "A", 2: "B"}, "numbers": {1: "1", 2: "2", 3: "3"}},
+        )
+
+    def test_str_and_repr(self):
+        """Tests string representations of a MasterDict object."""
+        display = (
+            "MasterDict(letters={1: 'A', 2: 'B'}, numbers={1: '1', 2: '2', 3: '3'})"
+        )
+        self.assertEqual(repr(self.master), display)
+        self.assertEqual(str(self.master), display)
+
+
 class BaseMappingTest(unittest.TestCase):
     """
     Tests BaseMapping class.
@@ -233,6 +272,60 @@ class BaseMappingTest(unittest.TestCase):
         self.assertTrue(mapping.startswith("DerivedMapping"))
         # Contents are also displayed, like in a normal dict
         self.assertIn(repr({"Will": 29}), mapping)
+
+    def test_invert(self):
+        """Tests inverting the mapping."""
+        mapping = BaseMapping([(1, "a"), (2, "b")], lambda x: x[0], lambda x: x[1])
+        self.assertEqual(mapping.invert(), {"a": 1, "b": 2})
+
+    def test_invert_strict_mode(self):
+        """Tests strict mode when inverting the mapping."""
+        mapping = BaseMapping([(1, "a"), (2, "a")], lambda x: x[0], lambda x: x[1])
+        self.assertEqual(len(mapping.invert(strict=False)), 1)
+        with self.assertRaises(ValueError):
+            mapping.invert(strict=True)
+
+    # @unittest.skip
+    def test__invert_and_cast(self):
+        """Tests inverting the mapping and casting it to another mapping type."""
+        first_name_getter = self.first_name_getter
+        age_getter = self.age_getter
+
+        class NameToAge(BaseMapping):
+            def __init__(self, items):
+                super().__init__(items, first_name_getter, age_getter)
+
+            def invert(self, strict: bool = False) -> "AgeToName":
+                return super()._invert_and_cast(AgeToName, strict)
+
+        class AgeToName(BaseMapping):
+            def __init__(self, items):
+                super().__init__(items, age_getter, first_name_getter)
+
+            def invert(self, strict: bool = False) -> NameToAge:
+                return self._invert_and_cast(NameToAge, strict)
+
+        mapping = AgeToName(PEOPLE)
+        inverse_mapping = mapping.invert()
+        self.assertIsInstance(inverse_mapping, NameToAge)
+        self.assertEqual(mapping, inverse_mapping.invert())
+
+    def test__invert_and_cast_to_generic_type(self):
+        """Tests inverting the mapping and casting it to a generic dict type."""
+        first_name_getter = self.first_name_getter
+        age_getter = self.age_getter
+
+        class AgeToName(BaseMapping):
+            def __init__(self, items):
+                super().__init__(items, age_getter, first_name_getter)
+
+            def invert(self, strict: bool = False) -> dict:
+                return self._invert_and_cast(dict, strict)
+
+        mapping = AgeToName(PEOPLE)
+        inverse_mapping = mapping.invert()
+        self.assertEqual(type(inverse_mapping), dict)
+        self.assertEqual(mapping, BaseMapping.invert(inverse_mapping))
 
 
 if __name__ == "__main__":

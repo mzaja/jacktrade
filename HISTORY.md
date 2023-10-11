@@ -1,5 +1,12 @@
 # Release History
 
+## 0.8.0 (2023-10-11)
+### Improvements
+- Added `MasterDict` class.
+- `BaseMapping` instances can be inverted.
+- `CodeTimer` supports minutes, hours and days.
+- Python 3.12 supported.
+
 ## 0.7.0 (2023-09-26)
 ### Improvements
 - Added `Permutations` class.

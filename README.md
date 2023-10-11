@@ -82,6 +82,17 @@ chunkify(list_data, chunk_size=2)   # Yields: [1, 2], [[3, 4], 5], [6]
 limit_iterator(list_data, limit=3)  # Yields: 1, 2, [3, 4]
 ```
 
+`MasterDict` is a wrapper class holding multiple dictionaries. It provides methods for simultaneously deleting keys from all underlying dictionaries, as well as clearing them. It is intended to hold caches and reliably empty them with a single method call.
+```py
+from jacktrade import MasterDict
+
+dicts = MasterDict(a={1: "1", 2: "2"}, b={1: "1", 3: "3"}, c={4: "4"})
+dicts.delete_keys(1, 3)  # Delete keys 1 and 3 from all dictionaries
+dicts.as_dict()  # Returns:  {'a': {2: '2'}, 'b': {}, 'c': {4: '4'}}
+dicts.clear_all()  # Clear all dictionaries
+dicts.as_dict()  # Returns:  {'a': {}, 'b': {}, 'c': {}}
+```
+
 `BaseMapping` is a generic base class used to create `dict` subclasses which automatically map keys to values from a collection of objects of the same type. It is used like so:
 ```py
 from jacktrade import BaseMapping
@@ -107,7 +118,9 @@ mapping = NameAgeLookup(
     ]
 )
 
-assert mapping == {"Mike": 27, "Pete": 39}  # Passes
+# Assertions pass
+assert mapping == {"Mike": 27, "Pete": 39}
+assert mapping.invert() == {27: "Mike", 39: "Pete"}
 ```
 
 `Permutations` class is used for parametrisation, returning all possible combinations of input parameters:

@@ -13,7 +13,7 @@
 @REM Check history, commit, tag the release and push to remote
 @REM =========================================================
 @REM Set release version here:
-SET RELEASE_VERSION=0.7.0
+SET RELEASE_VERSION=0.8.0
 
 @REM Check that the distribution has been built already
 IF NOT EXIST "dist\jacktrade-%RELEASE_VERSION%-py3-none-any.whl" (
@@ -45,6 +45,7 @@ IF %ERRORLEVEL% NEQ 0 (
     ECHO pre-commit found errors and modified files!
     EXIT 1
 )
+
 @REM Stage and commit files, add tags and push
 git add .
 git commit -m "Prepare release %RELEASE_VERSION%"

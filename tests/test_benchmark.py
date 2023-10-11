@@ -3,6 +3,7 @@ from time import sleep
 from unittest import mock
 
 from jacktrade import CodeTimer
+from jacktrade.benchmark import *
 
 
 class CodeTimerTest(unittest.TestCase):
@@ -28,6 +29,14 @@ class CodeTimerTest(unittest.TestCase):
             pass
         mock_perf_counter_ns.assert_called()
 
+    @mock.patch("time.perf_counter_ns")
+    def test_resolution(self, mock_perf_counter_ns):
+        """No error must be raised if time delta is zero."""
+        mock_perf_counter_ns.side_effect = [0, 0]
+        with CodeTimer() as ct:
+            pass
+        # Test passes if no exceptions are raised
+
     @mock.patch("builtins.print")
     def test_print_options(self, mock_print):
         """Tests the no_print option."""
@@ -40,14 +49,59 @@ class CodeTimerTest(unittest.TestCase):
 
     def test_min_digits(self):
         """Tests that the min_digits parameter works as expected."""
-        ct = CodeTimer()
-        for time_ns in [1, 12, 123, 1234, 12345, 12345678901234567890]:
-            for min_digits in range(1, 11):
+        for time_ns in [
+            int("".join(str(x % 10) for x in range(mx))) for mx in range(2, 22)
+        ]:
+            # [1, 12, 123, ... 12345678901234567890]
+            for min_digits in range(1, 25):
                 with self.subTest(time_ns=time_ns, min_digits=min_digits):
                     digit_count = sum(
-                        c.isdigit() for c in ct._format_time(time_ns, min_digits)
+                        c.isdigit() for c in CodeTimer._format_time(time_ns, min_digits)
                     )
                     self.assertGreaterEqual(digit_count, min_digits)
+
+    def test__format_time(self):
+        """Tests that time formatting works as expected."""
+        self.assertEqual(
+            CodeTimer._format_time(1, 3),
+            "1.00 ns",
+        )
+        self.assertEqual(
+            CodeTimer._format_time(NS_PER_MICROSECOND, 3),
+            "1.00 us",
+        )
+        self.assertEqual(
+            CodeTimer._format_time(NS_PER_MILLISECOND, 3),
+            "1.00 ms",
+        )
+        self.assertEqual(
+            CodeTimer._format_time(NS_PER_SECOND, 3),
+            "1.00 s",
+        )
+        self.assertEqual(
+            CodeTimer._format_time(NS_PER_MINUTE - NS_PER_MILLISECOND, 7),
+            "59.99900 s",
+        )
+        self.assertEqual(
+            CodeTimer._format_time(NS_PER_MINUTE, 7),
+            "01:00.0000",
+        )
+        self.assertEqual(
+            CodeTimer._format_time(NS_PER_HOUR, 7),
+            "01:00:00.00",
+        )
+        self.assertEqual(
+            CodeTimer._format_time(NS_PER_DAY, 7),
+            "1 day, 00:00:00",
+        )
+        self.assertEqual(
+            CodeTimer._format_time(2 * NS_PER_DAY, 7),
+            "2 days, 00:00:00",
+        )
+        self.assertEqual(
+            CodeTimer._format_time(12345678901234567890, 25),
+            "142,889 days, 19:15:01.2345678900000",
+        )
 
     @mock.patch("builtins.print")
     def test_decorator(self, mock_print: mock.Mock):

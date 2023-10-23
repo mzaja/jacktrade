@@ -10,7 +10,7 @@ profile = "black"
 
 [project]
 name = "jacktrade"
-version = "0.8.0"
+version = "0.9.0"
 authors = [
   { name="Mario Zaja", email="mzaja0@gmail.com" },
 ]

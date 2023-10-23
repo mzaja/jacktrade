@@ -88,7 +88,7 @@ class StringBuffersTest(unittest.TestCase):
         buffers = self.load_data(StringBuffers(self.tempdir.name))
         self.assertFalse(self.file_1_path.exists())
         self.assertFalse(self.file_2_path.exists())
-        removed_files = buffers.files
+        removed_files = buffers.files  # All fiiles
         self.assertEqual(buffers.remove_all(), removed_files)
         self.assert_in_file(self.file_1_path, "134")
         self.assert_in_file(self.file_2_path, "2")

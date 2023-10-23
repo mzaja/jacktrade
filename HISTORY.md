@@ -1,5 +1,11 @@
 # Release History
 
+## 0.9.0 (2023-10-23)
+### Improvements
+- `StringBuffers.remove_all` method added.
+### Fixes
+- `StringBuffers.flush(file)` raises `ValueError` if `file` has not been previously added.
+
 ## 0.8.0 (2023-10-11)
 ### Improvements
 - Added `MasterDict` class.

@@ -53,6 +53,13 @@ class StringBuffersTest(unittest.TestCase):
         self.assertFalse(self.file_2_path.exists())
         self.assertEqual(buffers.files, [FILE_1, FILE_2])
 
+    def test_flush_nonexistent_file(self):
+        buffers = self.load_data(StringBuffers(self.tempdir.name))
+        nonexistent_filename = "totally_not_an_existing_file.txt"
+        with self.assertRaises(ValueError) as ctx:
+            buffers.flush(nonexistent_filename)
+        self.assertIn(nonexistent_filename, str(ctx.exception))
+
     def test_flush_all(self):
         buffers = self.load_data(StringBuffers(self.tempdir.name))
         self.assertFalse(self.file_1_path.exists())
@@ -74,6 +81,16 @@ class StringBuffersTest(unittest.TestCase):
         self.assertEqual(buffers.files, [FILE_2])
         # Dumpr and remove file 2
         buffers.remove(FILE_2)
+        self.assert_in_file(self.file_2_path, "2")
+        self.assertEqual(buffers.files, [])
+
+    def test_remove_all(self):
+        buffers = self.load_data(StringBuffers(self.tempdir.name))
+        self.assertFalse(self.file_1_path.exists())
+        self.assertFalse(self.file_2_path.exists())
+        removed_files = buffers.files
+        self.assertEqual(buffers.remove_all(), removed_files)
+        self.assert_in_file(self.file_1_path, "134")
         self.assert_in_file(self.file_2_path, "2")
         self.assertEqual(buffers.files, [])
 

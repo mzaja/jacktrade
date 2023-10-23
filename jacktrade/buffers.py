@@ -56,7 +56,10 @@ class StringBuffers:
         Flushes the data in output file's buffer to the output file.
         Returns the full path to the file to which the data was flushed.
         """
-        return self._flush_buffer(output_file, self._buffers[output_file])
+        buffer = self._buffers.get(output_file)
+        if buffer is None:
+            raise ValueError(f"'{output_file}' does not have a matching string buffer.")
+        return self._flush_buffer(output_file, buffer)
 
     def flush_all(self) -> None:
         """Flushes all buffers to disk."""
@@ -72,6 +75,17 @@ class StringBuffers:
         output_file_path = self.flush(output_file)
         del self._buffers[output_file]
         return output_file_path
+
+    def remove_all(self) -> list[str]:
+        """
+        Removes all output files from the buffer,
+        flushing the data to disk beforehand.
+        Returns a list of paths to all removed files.
+        """
+        self.flush_all()  # Faster than doing an element-wise lookup
+        removed_files = self.files
+        self._buffers.clear()  # Batch-delete all buffers
+        return removed_files
 
     @property
     def files(self) -> list[str]:

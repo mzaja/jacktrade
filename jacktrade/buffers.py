@@ -55,13 +55,8 @@ class StringBuffers:
         """
         Flushes the data in output file's buffer to the output file.
         Returns the full path to the file to which the data was flushed.
-
-        Raises ValueError if the output file does not have a linked buffer.
         """
-        buffer = self._buffers.get(output_file)
-        if buffer is None:
-            raise ValueError(f"'{output_file}' does not have a linked string buffer.")
-        return self._flush_buffer(output_file, buffer)
+        return self._flush_buffer(output_file, self._buffers[output_file])
 
     def flush_all(self) -> None:
         """Flushes all buffers to disk."""

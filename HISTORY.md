@@ -1,5 +1,9 @@
 # Release History
 
+## 0.9.1 (2023-10-25)
+### Fixes
+- `StringBuffers.flush(file)` does not raise `ValueError` if `file` has not been previously added.
+
 ## 0.9.0 (2023-10-23)
 ### Improvements
 - `StringBuffers.remove_all` method added.

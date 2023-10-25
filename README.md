@@ -182,7 +182,7 @@ assert unpickle_object(filename) == obj     # Unpickle obj.pickle and test equal
 ## Sysenv
 Contains utilities for interacting with the operating system and the environment.
 ```py
-from jacktrade import in_virtual_environment
+from jacktrade import in_virtual_environment, suspend, hibernate, restart, shutdown
 
 # Power management
 suspend()    # Put the machine into standby

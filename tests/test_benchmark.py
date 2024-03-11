@@ -127,15 +127,17 @@ class CodeTimerTest(unittest.TestCase):
                 def sleep_ms(ms: int):
                     sleep(ms / 1000)
 
-                for idx, t_sleep in enumerate([20, 30, 40]):
+                sleep_times = [20, 30, 40]
+                for idx, t_sleep in enumerate(sleep_times):
                     sleep_ms(t_sleep)
+                for idx, t_sleep in enumerate(sleep_times):
                     self.assertAlmostEqual(results[idx].ms, t_sleep, delta=2)
                 return  # Exit after first successful pass
             except AssertionError as ex:
                 continue  # Retry
         self.fail(
             "test_results_collection() repeatedly failed and ran out of retries."
-            f"\nResults are: {[round(r.ms, 3) for r in results]}"
+            f"\nLast results are: {[round(r.ms, 3) for r in results]}"
         )
 
 

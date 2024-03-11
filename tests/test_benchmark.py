@@ -139,12 +139,9 @@ class CodeTimerTest(unittest.TestCase):
 
             # Exemption for Python 3.10 running on Windows
             if sys.version_info[:2] == (3, 10) and platform.system() == "Windows":
-                return  # Exit the test before it fails by default
-            # Fail by default in all other cases
-            self.fail(
-                "test_results_collection() repeatedly failed and ran out of retries."
-                f"\nResults are: {[round(r.ms, 3) for r in results]}\n{ex}"
-            )
+                return  # Exit the test so it passes
+            else:
+                raise ex  # Fail in all other cases
 
 
 if __name__ == "__main__":

@@ -127,9 +127,9 @@ class CodeTimerTest(unittest.TestCase):
                 def sleep_ms(ms: int):
                     sleep(ms / 1000)
 
-                for t_sleep in [20, 30, 40]:
+                for idx, t_sleep in enumerate([20, 30, 40]):
                     sleep_ms(t_sleep)
-                    self.assertAlmostEqual(results[0].ms, t_sleep, delta=2)
+                    self.assertAlmostEqual(results[idx].ms, t_sleep, delta=2)
                 return  # Exit after first successful pass
             except AssertionError:
                 continue  # Retry

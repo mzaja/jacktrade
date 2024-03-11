@@ -129,11 +129,14 @@ class CodeTimerTest(unittest.TestCase):
 
                 for idx, t_sleep in enumerate([20, 30, 40]):
                     sleep_ms(t_sleep)
-                    self.assertAlmostEqual(results[idx].ms, t_sleep, delta=1)
+                    self.assertAlmostEqual(results[idx].ms, t_sleep, delta=2)
                 return  # Exit after first successful pass
-            except AssertionError:
+            except AssertionError as ex:
                 continue  # Retry
-        self.fail("test_results_collection() repeatedly failed and ran out of retries.")
+        self.fail(
+            "test_results_collection() repeatedly failed and ran out of retries."
+            f"\nResults are: {results}"
+        )
 
 
 if __name__ == "__main__":

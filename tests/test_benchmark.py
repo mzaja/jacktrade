@@ -135,7 +135,7 @@ class CodeTimerTest(unittest.TestCase):
                 continue  # Retry
         self.fail(
             "test_results_collection() repeatedly failed and ran out of retries."
-            f"\nResults are: {results}"
+            f"\nResults are: {[round(r.ms, 3) for r in results]}"
         )
 
 

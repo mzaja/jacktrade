@@ -43,7 +43,7 @@ jobs:
         isort --check tests jacktrade
     - name: Run tests
       run: |
-        coverage run --source=jacktrade -m unittest discover -s tests -b
+        coverage run
         coverage report
     - name: Upload coverage to Coveralls
       env:

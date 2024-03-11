@@ -1,2 +1,7 @@
-[coverage:report]
+[run]
+source = jacktrade
+command_line = -m unittest discover --start-directory tests --buffer
+
+[report]
 skip_empty = true
+fail_under = 100

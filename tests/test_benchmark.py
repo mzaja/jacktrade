@@ -1,3 +1,4 @@
+import re
 import unittest
 from time import sleep
 from unittest import mock
@@ -104,7 +105,20 @@ class CodeTimerTest(unittest.TestCase):
         )
 
     @mock.patch("builtins.print")
-    def test_decorator(self, mock_print: mock.Mock):
+    def test_properties(self, mock_print: mock.MagicMock):
+        """Tests 'message' and 'time_str' properties."""
+        # Test default values, if called before the measurement
+        ct = CodeTimer()
+        self.assertEqual(ct.message, "No code execution has taken place yet.")
+        self.assertEqual(ct.time_str, "")
+        # Test values after measurement correspond to the printout
+        with ct:
+            pass
+        self.assertEqual(ct.message, mock_print.call_args.args[0])
+        self.assertEqual(ct.time_str, re.search("took (.*)\.", ct.message).group(1))
+
+    @mock.patch("builtins.print")
+    def test_decorator(self, mock_print: mock.MagicMock):
         """Tests that the class can be used as a decorator."""
 
         @CodeTimer()

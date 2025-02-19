@@ -62,6 +62,28 @@ class CodeTimer:
         self.h = -1
         self.d = -1
 
+    @property
+    def time_str(self) -> str:
+        """
+        Returns a formatted string representation of elapsed code execution time,
+        where the unit and the number of decimal places are chosen automatically.
+
+        Returns an empty string if no measurement has taken place yet.
+        """
+        return "" if (self.ns < 0) else self._format_time(self.ns, self._min_digits)
+
+    @property
+    def message(self) -> str:
+        """
+        Returns the message printed out at the end of code execution as a string.
+
+        Returns a different message if no code execution has taken place yet.
+        """
+        if self.time_str:
+            return f"Code execution took {self.time_str}."
+        else:
+            return "No code execution has taken place yet."
+
     def __enter__(self):
         self._start_time_ns = time.perf_counter_ns()
         return self
@@ -76,9 +98,7 @@ class CodeTimer:
         self.d = time_ns / NS_PER_DAY
 
         if not self._no_print:
-            print(
-                f"Code execution took {self._format_time(time_ns, self._min_digits)}."
-            )
+            print(self.message)
         if self._results is not None:
             self._results.append(copy.copy(self))
 

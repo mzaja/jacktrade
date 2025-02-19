@@ -44,6 +44,10 @@ class CodeTimer:
         - m: Code execution time in minutes.
         - h: Code execution time in hours.
         - d: Code execution time in days.
+
+    Properties:
+        - time_str: Returns the formatted string representation of execution time.
+        - message: Returns the message normally printed on measurement completion.
     """
 
     _UNITS_SECONDS = ("ns", "us", "ms", "s")

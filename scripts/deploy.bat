@@ -13,7 +13,7 @@
 @REM Check history, commit, tag the release and push to remote
 @REM =========================================================
 @REM Set release version here:
-SET RELEASE_VERSION=0.9.1
+SET RELEASE_VERSION=0.10.0
 
 @REM Check that the distribution has been built already
 IF NOT EXIST "dist\jacktrade-%RELEASE_VERSION%-py3-none-any.whl" (
@@ -47,7 +47,7 @@ IF %ERRORLEVEL% NEQ 0 (
 )
 
 @REM Stage and commit files, add tags and push
-git add .
+git add pyproject.toml HISTORY.md deploy.bat
 git commit -m "Prepare release %RELEASE_VERSION%"
 git tag v%RELEASE_VERSION%
 git push

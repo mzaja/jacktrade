@@ -1,5 +1,10 @@
 # Release History
 
+## 0.10.0 (2025-02-19)
+### Improvements
+- Python 3.13 supported.
+- Added `message` and `time_str` properties to `CodeTimer` class.
+
 ## 0.9.1 (2023-10-25)
 ### Fixes
 - `StringBuffers.flush(file)` does not raise `ValueError` if `file` has not been previously added.

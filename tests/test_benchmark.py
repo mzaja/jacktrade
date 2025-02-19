@@ -144,7 +144,7 @@ class CodeTimerTest(unittest.TestCase):
         with ct:
             pass
         self.assertEqual(ct.message, mock_print.call_args.args[0])
-        self.assertEqual(ct.time_str, re.search("took (.*)\.", ct.message).group(1))
+        self.assertEqual(ct.time_str, re.search(r"took (.*)\.", ct.message).group(1))
 
     @mock.patch("builtins.print")
     def test_decorator(self, mock_print: mock.MagicMock):

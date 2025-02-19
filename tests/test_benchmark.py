@@ -12,6 +12,35 @@ class CodeTimerTest(unittest.TestCase):
     Tests the CodeTimer class.
     """
 
+    @staticmethod
+    def flaky(test_method):
+        """
+        Marks the test as flaky, and suppresses AssertionError
+        when running Python <= 3.10 on Windows.
+
+        Prior to Python 3.11, the accuracy of sleep() on Windows was
+        much lower, and millisecond accuracy is not reliably attainable.
+        https://docs.python.org/3.11/library/time.html#time.sleep
+        """
+
+        def wrapper(self: unittest.TestCase, *args, **kwargs):
+            try:
+                test_method(self, *args, **kwargs)
+            except AssertionError as ex:
+                import platform
+                import sys
+
+                # Exemption for Python <= 3.10 running on Windows
+                if sys.version_info[:2] <= (3, 10) and platform.system() == "Windows":
+                    self.skipTest(
+                        "sleep() function is insufficiently accurate on this platform"
+                    )
+                else:
+                    raise ex  # Fail in all other cases
+
+        return wrapper
+
+    @flaky
     def test_core_functionality(self):
         """Tests the core functionality."""
         task_time_s = 0.100
@@ -129,33 +158,20 @@ class CodeTimerTest(unittest.TestCase):
         mock_print.assert_called_once()
         self.assertIn("Code execution", mock_print.call_args.args[0])
 
+    @flaky
     def test_results_collection(self):
         """Tests storing the benchmark results into a user-provided list."""
-        # This test usually fails on the Windows test runner with Python 3.10.
-        # Prior to Python 3.11, the accuracy of sleep() on Windows was
-        # much lower, and millisecond accuracy is not reliably attainable.
-        # https://docs.python.org/3.11/library/time.html#time.sleep
-        try:
-            results = []
+        results = []
 
-            @CodeTimer(no_print=True, results=results)
-            def sleep_ms(ms: int):
-                sleep(ms / 1000)
+        @CodeTimer(no_print=True, results=results)
+        def sleep_ms(ms: int):
+            sleep(ms / 1000)
 
-            sleep_times = [10, 20, 30]
-            for idx, t_sleep in enumerate(sleep_times):
-                sleep_ms(t_sleep)
-            for idx, t_sleep in enumerate(sleep_times):
-                self.assertAlmostEqual(results[idx].ms, t_sleep, delta=2)
-        except AssertionError as ex:
-            import platform
-            import sys
-
-            # Exemption for Python 3.10 running on Windows
-            if sys.version_info[:2] == (3, 10) and platform.system() == "Windows":
-                return  # Exit the test so it passes
-            else:
-                raise ex  # Fail in all other cases
+        sleep_times = [10, 20, 30]
+        for idx, t_sleep in enumerate(sleep_times):
+            sleep_ms(t_sleep)
+        for idx, t_sleep in enumerate(sleep_times):
+            self.assertAlmostEqual(results[idx].ms, t_sleep, delta=2)
 
 
 if __name__ == "__main__":

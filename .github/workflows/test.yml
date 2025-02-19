@@ -48,4 +48,10 @@ jobs:
     - name: Upload coverage to Coveralls
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: coveralls --service=github
+        MATRIX_PYTHON_VERSION: ${{ matrix.python-version }}
+        MATRIX_OS: ${{matrix.os}}
+      run: |
+        if [ "$MATRIX_PYTHON_VERSION" == "3.13" ] && [ "$MATRIX_OS" == "ubuntu-latest" ]; then
+          coveralls --service=github
+        else
+          echo "Skipping coveralls coverage upload for this OS & Python combination."

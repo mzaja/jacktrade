@@ -55,3 +55,7 @@ git push --tags
 
 @REM Go to package repository and add a release manually
 START firefox https://github.com/mzaja/jacktrade/releases/new
+
+@REM Ask for confirmation before publishing the package to PyPI
+SET /P choice="Upload package to PyPI? (y/n) "
+IF %choice%==y ( python -m twine upload dist/* )

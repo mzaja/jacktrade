@@ -15,6 +15,13 @@
 @REM Set release version here:
 SET RELEASE_VERSION=0.10.0
 
+@REM Ensure on the main branch
+FOR /F "tokens=*" %%i IN ('git branch --show-current') DO SET CURRENT_BRANCH=%%i
+IF NOT "%CURRENT_BRANCH%"=="main" (
+    ECHO Not on the main branch!
+    EXIT 1
+)
+
 @REM Check that the distribution has been built already
 IF NOT EXIST "dist\jacktrade-%RELEASE_VERSION%-py3-none-any.whl" (
     ECHO Wheel missing for the current release!
@@ -47,7 +54,7 @@ IF %ERRORLEVEL% NEQ 0 (
 )
 
 @REM Stage and commit files, add tags and push
-git add pyproject.toml HISTORY.md deploy.bat
+git add pyproject.toml HISTORY.md scripts\deploy.bat
 git commit -m "Prepare release %RELEASE_VERSION%"
 git tag v%RELEASE_VERSION%
 git push

@@ -31,3 +31,4 @@ keywords = ["utils", "utilities"]
 [project.urls]
 "Homepage" = "https://github.com/mzaja/jacktrade"
 "Bug Tracker" = "https://github.com/mzaja/jacktrade/issues"
+"Changelog" = "https://github.com/mzaja/jacktrade/blob/main/HISTORY.md"

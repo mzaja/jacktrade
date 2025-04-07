@@ -10,7 +10,7 @@ profile = "black"
 
 [project]
 name = "jacktrade"
-version = "0.10.0"
+version = "0.11.0"
 authors = [
   { name="Mario Zaja", email="mzaja0@gmail.com" },
 ]
@@ -32,3 +32,6 @@ keywords = ["utils", "utilities"]
 "Homepage" = "https://github.com/mzaja/jacktrade"
 "Bug Tracker" = "https://github.com/mzaja/jacktrade/issues"
 "Changelog" = "https://github.com/mzaja/jacktrade/blob/main/HISTORY.md"
+
+[project.scripts]
+merge = "jacktrade.files:_merge_files_cli_app"

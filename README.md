@@ -149,6 +149,19 @@ merge_csv_files(["A.csv", "B.csv"], "AB.csv")
 merge_csv_files(["A.csv", "B.csv"], "AB.csv", has_headers=False)
 ```
 
+### Command line utility
+The package also provides a command line utility to do the same actions as above:
+```bash
+merge csv AB.csv A.csv B.csv  # Merge A.csv and B.csv into AB.csv
+merge csv --no-headers AB.csv A.csv B.csv  # Treat headers as data
+```
+
+The command line utility also allows the user to specify directories and glob patterns, like so:
+```bash
+merge csv merged.csv dir1 dir2  # Merges all *.csv files in dir1 & dir2 (if they exist) into merged.csv
+merge csv --glob merged.csv "1*.csv" "3*.csv" # Merges all CSV files whose names begin with 1 or 3
+```
+
 ## Multicore
 Provides an elegant and memory-efficient way to process data using multiple cores. The main advantage of using `do_multicore_work` function over manually using `concurrent.futures` or `multiprocessing` modules is that new jobs are only submitted for execution when a CPU core is available. This optimises CPU and RAM usage. Using the aforementioned modules directly, it is all too easy to inadvarently cause memory leaks and crash the interpreter (if not the whole system).
 

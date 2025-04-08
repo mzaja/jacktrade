@@ -1,5 +1,9 @@
 # Release History
 
+## 0.11.0 (2025-04-08)
+### Improvements
+- Added a `merge csv` command line utility for merging CSV files.
+
 ## 0.10.0 (2025-02-19)
 ### Improvements
 - Python 3.13 supported.

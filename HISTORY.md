@@ -1,5 +1,10 @@
 # Release History
 
+## 0.12.0 (2025-10-09)
+### Improvements
+- Python 3.14 supported.
+- Added `@cached_method` decorator.
+
 ## 0.11.0 (2025-04-08)
 ### Improvements
 - Added a `merge csv` command line utility for merging CSV files.

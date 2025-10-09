@@ -10,6 +10,7 @@ The package consists of the following submodules:
 
 - [Benchmark](#benchmark)
 - [Buffers](#buffers)
+- [Cache](#cache)
 - [Collections](#collections)
 - [Files](#files)
 - [Multicore](#multicore)
@@ -61,6 +62,33 @@ buffers = StringBuffers(output_dir="text", buffer_size=3)
 buffers.add(output_file, "Hello")   # Nothing is written out
 buffers.add(output_file, " world")  # Nothing is written out
 buffers.add(output_file, "!")  # "Hello world!" is written to ./text/out.txt
+```
+
+## Cache
+Contains a `@cached_method` decorator which can be used to cache the calls of instance and class methods. The cache is attached to the object's instance (or the class in case of class methods), so it gets garbage collected together with the object.
+
+```py
+from jacktrade import cached_method
+from time import sleep
+
+class Worker:
+
+    @cached_method
+    def instance_method(self, base, exp):
+        sleep(base**exp)  # Long-running task
+
+    @classmethod
+    @cached_method
+    def class_method(cls, base, exp):
+        sleep(base**exp)  # Long-running task
+
+
+w = Worker()
+w.instance_method(2, 5)  # Takes 2^5 = 32 seconds to return
+w.instance_method(2, 5)  # Returns immediately
+
+Worker.class_method(3, 3)  # Takes 3^3 = 27 seconds to return
+Worker.class_method(3, 3)  # Returns immediately
 ```
 
 ## Collections

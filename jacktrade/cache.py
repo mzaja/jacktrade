@@ -1,4 +1,5 @@
 from functools import wraps
+from inspect import signature
 from typing import Callable
 
 
@@ -10,19 +11,23 @@ def cached_method(func: Callable):
     decorator needs to be applied after this one (placed above it).
     """
     cache_name = f"_{func.__name__}_cache"
+    func_signature = signature(func)
 
     @wraps(func)
     def wrapper(self, *args, **kwargs):
-        # Keyword arguments are sorted to ensure their order does not matter
-        key = (args, tuple(sorted(kwargs.items(), key=lambda x: x[0])))
-
         if (cache := getattr(self, cache_name, None)) is None:
             setattr(self, cache_name, cache := {})
 
-        if key in cache:
-            return cache[key]
+        # Normalise arguments to avoid cache misses due to differences in ways
+        # the arguments are provided when the calls are syntactically the same.
+        bound_args = func_signature.bind(self, *args, **kwargs)
+        bound_args.apply_defaults()
+        key = tuple(bound_args.arguments.values())[1:]  # Exclude 'self'
 
-        result = cache[key] = func(self, *args, **kwargs)
-        return result
+        try:
+            return cache[key]
+        except KeyError:
+            cache[key] = result = func(self, *args, **kwargs)
+            return result
 
     return wrapper

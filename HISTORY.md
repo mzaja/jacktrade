@@ -1,5 +1,10 @@
 # Release History
 
+## 0.13.0 (2025-10-10)
+### Improvements
+- `@cached_method` decorator normalises arguments to prevent cache misses due to differences in the way syntactically equivalent arguments are provided.
+- Optimised `@cached_method` decorator by removing a redundant key lookup.
+
 ## 0.12.0 (2025-10-09)
 ### Improvements
 - Python 3.14 supported.
